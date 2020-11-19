@@ -10,41 +10,43 @@ import com.google.android.material.textfield.TextInputLayout
 
 class LogInActivity : AppCompatActivity() {
 
+    //lateinit promises that this variable will be initialized before calling any operations on it.
+    lateinit var passwordTxt: TextInputEditText
+    lateinit var passwordLayout: TextInputLayout
+    lateinit var usernameTxt: TextInputEditText
+    lateinit var usernameLayout: TextInputLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
 
-        val username: TextInputEditText = findViewById(R.id.username)
-        val password: TextInputEditText = findViewById(R.id.password)
         val loginBtn: MaterialButton = findViewById(R.id.loginBtn)
 
         loginBtn.setOnClickListener {
             checkUsername()
             checkPassword()
         }
+
+        passwordTxt = findViewById(R.id.password)
+        passwordLayout = findViewById(R.id.passwordLayout)
+        usernameTxt = findViewById(R.id.username)
+        usernameLayout = findViewById(R.id.usernameLayout)
     }
 
     private fun checkPassword() {
-        val passwordTxt: TextInputEditText = findViewById(R.id.password)
-        val passwordLayout: TextInputLayout = findViewById(R.id.passwordLayout)
-
         if (passwordTxt.length() == 0){
             passwordLayout.isHelperTextEnabled = true
             passwordLayout.error = getString(R.string.enterPassword)
         }else{
             passwordLayout.error = null
-            System.out.println("Hashed password: " + passwordTxt.text!!.hashCode())
         }
     }
 
     private fun checkUsername() {
-        val usernametxt: TextInputEditText = findViewById(R.id.username)
-        val usernameLayout: TextInputLayout = findViewById(R.id.usernameLayout)
-
-        if (usernametxt.length() == 0){
+        if (usernameTxt.length() == 0){
             usernameLayout.isHelperTextEnabled = true
             usernameLayout.error = getString(R.string.enterUsername)
-        }else if(usernametxt.text!!.contains(" ")){
+        }else if(usernameTxt.text!!.contains(" ")){
             usernameLayout.isHelperTextEnabled = true
             usernameLayout.error = getString(R.string.usernameWithSpace)
         }else{
