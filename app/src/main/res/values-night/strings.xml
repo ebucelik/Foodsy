@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Foodsy</string>
     <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">SIGN IN</string>
+    <string name="enterUsername">Please enter your username.</string>
+    <string name="usernameWithSpace">Username does not contain spaces.</string>
+    <string name="enterPassword">Please enter your password.</string>
 </resources>
