@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="marginStyle">
+        <item name="android:layout_marginStart">@dimen/marginStartEnd</item>
+        <item name="android:layout_marginEnd">@dimen/marginStartEnd</item>
+    </style>
+</resources>
