@@ -7,4 +7,7 @@
     <string name="usernameWithSpace">Username does not contain spaces.</string>
     <string name="enterPassword">Please enter your password.</string>
     <string name="logo">Logo</string>
+    <string name="not_registered_yet_sign_up">Not registered yet? Sign Up.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
