@@ -5,29 +5,35 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import ebucelik.keepeasy.foodsy.databinding.FragmentLogInBinding
 
 /**
  * A simple [Fragment] subclass.
  */
-class LogInFragment : Fragment() {
+class LogInFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_log_in) {
 
     private lateinit var binding: FragmentLogInBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_log_in, container, false)
+    private var logInActivity: LogInActivity = _logInActivity
 
-        /*binding.loginBtn.setOnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentLogInBinding.bind(view)
+
+        binding.loginBtn.setOnClickListener {
             checkUsername()
             checkPassword()
-        }*/
+        }
 
-        return binding.root
+        binding.notRegistered.setOnClickListener {
+            logInActivity.changeFragment(logInActivity.registrationFragment)
+        }
     }
 
-    /*private fun checkPassword() {
+    private fun checkPassword() {
         binding.apply {
             if (binding.password.length() == 0){
                 binding.passwordLayout.isHelperTextEnabled = true
@@ -50,5 +56,5 @@ class LogInFragment : Fragment() {
                 binding.usernameLayout.error = null
             }
         }
-    }*/
+    }
 }

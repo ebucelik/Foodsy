@@ -11,11 +11,19 @@ import ebucelik.keepeasy.foodsy.databinding.FragmentRegistrationBinding
 /**
  * A simple [Fragment] subclass.
  */
-class RegistrationFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val binding: FragmentRegistrationBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_registration, container, false)
+class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_registration) {
 
-        return binding.root
+    private lateinit var binding: FragmentRegistrationBinding
+
+    private var logInActivity: LogInActivity = _logInActivity
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentRegistrationBinding.bind(view)
+
+        binding.blankFrag.setOnClickListener {
+            logInActivity.changeFragment(logInActivity.loginFragment)
+        }
     }
 }
