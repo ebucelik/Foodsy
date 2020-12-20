@@ -10,4 +10,14 @@
     <string name="not_registered_yet_sign_up">Not registered yet? Sign Up.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="surname">Surname</string>
+    <string name="name">Name</string>
+    <string name="lastname">Lastname</string>
+    <string name="you_have_already_an_account_sign_in">You have already an account? Sign In.</string>
+    <string name="sign_up">Sign Up</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 </resources>

@@ -9,4 +9,9 @@
     <string name="enterPassword">Please enter your password.</string>
     <string name="logo">Logo</string>
     <string name="not_registered_yet_sign_up">Not registered yet? Sign Up.</string>
+    <string name="surname">Surname</string>
+    <string name="name">Name</string>
+    <string name="lastname">Lastname</string>
+    <string name="you_have_already_an_account_sign_in">You have already an account? Sign In</string>
+    <string name="sign_up">Sign Up</string>
 </resources>

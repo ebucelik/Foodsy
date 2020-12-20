@@ -1,15 +1,16 @@
-package ebucelik.keepeasy.foodsy
+package ebucelik.keepeasy.foodsy.loginOrRegister
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import ebucelik.keepeasy.foodsy.databinding.ActivityLogInBinding
+import ebucelik.keepeasy.foodsy.R
+import ebucelik.keepeasy.foodsy.home.HomeActivity
 
 class LogInActivity : AppCompatActivity() {
 
-    lateinit var loginFragment:LogInFragment
-    lateinit var registrationFragment:RegistrationFragment
+    lateinit var loginFragment: LogInFragment
+    lateinit var registrationFragment: RegistrationFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,5 +30,9 @@ class LogInActivity : AppCompatActivity() {
             replace(R.id.flLoginActivity, frag)
             commit()
         }
+    }
+
+    fun openHomeActivity(){
+        startActivity(Intent(this@LogInActivity, HomeActivity::class.java))
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,8 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLogInScreen() {
         Handler().postDelayed({
-            val intent = Intent(this@MainActivity, LogInActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this@MainActivity, LogInActivity::class.java))
             finish() //If user go back, the app closes.
         }, 3000)
     }
