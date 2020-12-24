@@ -147,7 +147,7 @@
         android:layout_marginStart="@dimen/marginStartEnd"
         android:layout_marginEnd="@dimen/marginStartEnd"
         android:layout_marginBottom="8dp"
-        android:text="@string/sign_up"
+        android:text="@string/create_account"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
