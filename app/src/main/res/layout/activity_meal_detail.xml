@@ -4,7 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mealDetail.MealDetailActivity">
+    tools:context=".meal.MealDetailActivity">
+
+    <ImageView
+        android:id="@+id/mealImage"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/pomodorofusilli"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mealArea" />
+
+    <TextView
+        android:id="@+id/mealName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Meal name"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
+
+    <TextView
+        android:id="@+id/offeredDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Offered Date"
+        app:layout_constraintStart_toStartOf="@+id/mealName"
+        app:layout_constraintTop_toBottomOf="@+id/mealName" />
+
+    <TextView
+        android:id="@+id/mealCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        app:layout_constraintStart_toStartOf="@+id/offeredDate"
+        app:layout_constraintTop_toBottomOf="@+id/offeredDate" />
+
+    <TextView
+        android:id="@+id/mealArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Area"
+        app:layout_constraintStart_toStartOf="@+id/mealCategory"
+        app:layout_constraintTop_toBottomOf="@+id/mealCategory" />
 
     <TextView
         android:id="@+id/username"
@@ -19,26 +65,39 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/mealName"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Meal name"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/username"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        android:layout_marginTop="16dp"
+        android:text="Ingredients:"
+        app:layout_constraintStart_toStartOf="@+id/mealArea"
+        app:layout_constraintTop_toBottomOf="@+id/mealImage" />
 
-    <ImageView
-        android:id="@+id/mealImage"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
-        android:src="@mipmap/pomodorofusilli"
+    <TextView
+        android:id="@+id/mealIngredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Meal Ingredients"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mealName" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/orderBtn"
+        style="@style/marginStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/marginStartEnd"
+        android:layout_marginEnd="@dimen/marginStartEnd"
+        android:layout_marginBottom="8dp"
+        android:text="Order Meal"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

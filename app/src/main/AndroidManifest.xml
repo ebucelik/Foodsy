@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodsy">
-        <activity android:name=".mealDetail.MealDetailActivity"></activity>
+        <activity android:name=".meal.MealDetailActivity"></activity>
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.

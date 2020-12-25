@@ -59,15 +59,6 @@
         app:layout_constraintTop_toBottomOf="@+id/profileImage" />
 
     <TextView
-        android:id="@+id/validToDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Valid To"
-        android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="@+id/mealArea"
-        app:layout_constraintTop_toBottomOf="@+id/mealArea" />
-
-    <TextView
         android:id="@+id/mealCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

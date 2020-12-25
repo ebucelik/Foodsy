@@ -1,16 +1,14 @@
 package ebucelik.keepeasy.foodsy.home
 
-import android.R.id.tabs
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import ebucelik.keepeasy.foodsy.R
-import ebucelik.keepeasy.foodsy.mealDetail.MealDetailActivity
+import ebucelik.keepeasy.foodsy.meal.Meal
+import ebucelik.keepeasy.foodsy.meal.MealDetailActivity
 
 
 class HomeActivity : AppCompatActivity() {
@@ -25,6 +23,9 @@ class HomeActivity : AppCompatActivity() {
         const val USERNAME = "username"
         const val MEALNAME = "mealname"
         const val MEALIMAGE = "mealimage"
+        const val MEALCATEGORY = "mealcategory"
+        const val MEALAREA = "mealarea"
+        const val INGREDIENTS = "ingredients"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         homeFragment = HomeFragment(this)
-        searchFragment = SearchFragment()
+        searchFragment = SearchFragment(this)
         sellFragment = SellFragment()
         accountFragment = AccountFragment()
 
@@ -65,11 +66,14 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun openMealDetailActivity(username: String, mealName: String, mealImageUrl: String){
+    fun openMealDetailActivity(username: String, mealName: String, mealImageUrl: String, mealCategory: String, mealArea: String, ingredient1: String, ingredient2: String, ingredient3: String){
         val intent = Intent(this@HomeActivity, MealDetailActivity::class.java)
         intent.putExtra(USERNAME, username)
         intent.putExtra(MEALNAME, mealName)
         intent.putExtra(MEALIMAGE, mealImageUrl)
+        intent.putExtra(MEALCATEGORY, mealCategory)
+        intent.putExtra(MEALAREA, mealArea)
+        intent.putExtra(INGREDIENTS, "$ingredient1, $ingredient2, $ingredient3")
         startActivity(intent)
     }
 }
