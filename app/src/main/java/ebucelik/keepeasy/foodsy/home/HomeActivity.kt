@@ -35,7 +35,7 @@ class HomeActivity : AppCompatActivity() {
         homeFragment = HomeFragment(this)
         searchFragment = SearchFragment(this)
         sellFragment = SellFragment()
-        accountFragment = AccountFragment()
+        accountFragment = AccountFragment(this)
 
         tabLayout = findViewById(R.id.tabLayout)
 
@@ -53,10 +53,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fLHomeActivity, homeFragment)
-            commit()
-        }
+        changeFragment(homeFragment)
     }
 
     private fun changeFragment(fragment: Fragment){

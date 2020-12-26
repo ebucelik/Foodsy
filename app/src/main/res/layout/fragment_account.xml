@@ -10,10 +10,10 @@
     <ImageView
         android:id="@+id/logoImage"
         style="@style/marginStyle"
-        android:layout_width="238dp"
-        android:layout_height="111dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="@dimen/marginStartEnd"
         android:contentDescription="@string/logo"
         android:src="@drawable/ic_logo"
@@ -150,4 +150,34 @@
         app:layout_constraintStart_toEndOf="@+id/firstnameLabel"
         app:layout_constraintTop_toTopOf="@+id/usernameLabel" />
 
+    <FrameLayout
+        android:id="@+id/fLAccountFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileImage">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/accountTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/offerTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Offered Meals" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/orderTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ordered Meals" />
+        </com.google.android.material.tabs.TabLayout>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

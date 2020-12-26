@@ -1,4 +1,4 @@
-package ebucelik.keepeasy.foodsy.Adapter
+package ebucelik.keepeasy.foodsy.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

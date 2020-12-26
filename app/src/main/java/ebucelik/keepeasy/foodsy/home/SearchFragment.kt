@@ -4,13 +4,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ListAdapter
 import com.google.gson.GsonBuilder
-import ebucelik.keepeasy.foodsy.Adapter.MealListAdapter
+import ebucelik.keepeasy.foodsy.adapter.MealListAdapter
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentSearchBinding
 import ebucelik.keepeasy.foodsy.meal.Meal
