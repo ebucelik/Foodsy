@@ -1,5 +1,6 @@
 package ebucelik.keepeasy.foodsy.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,9 +8,9 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import ebucelik.keepeasy.foodsy.R
+import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
 import ebucelik.keepeasy.foodsy.meal.Meal
 import ebucelik.keepeasy.foodsy.meal.MealDetailActivity
-
 
 class HomeActivity : AppCompatActivity() {
 
@@ -72,5 +73,12 @@ class HomeActivity : AppCompatActivity() {
         intent.putExtra(MEALAREA, mealArea)
         intent.putExtra(INGREDIENTS, "$ingredient1, $ingredient2, $ingredient3")
         startActivity(intent)
+    }
+
+    fun openLoginActivity(){
+        val intent = Intent(this@HomeActivity, LogInActivity::class.java)
+        startActivity(intent)
+        finish() //The HomeActivity has to views if I click on the back button. Don't know why but to kill both I must call twice finish()
+        finish()
     }
 }

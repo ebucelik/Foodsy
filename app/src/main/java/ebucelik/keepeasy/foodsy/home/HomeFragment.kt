@@ -1,5 +1,6 @@
 package ebucelik.keepeasy.foodsy.home
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -34,6 +35,11 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
                 e.printStackTrace()
             }
         }
+
+        binding.logout.setOnClickListener {
+            setUUIDtoEmpty()
+            homeActivity.openLoginActivity()
+        }
     }
 
     private fun fetchJson(){
@@ -58,5 +64,13 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
                 println("Failure")
             }
         })
+    }
+
+    private fun setUUIDtoEmpty(){
+        val sharedPref = activity?.getSharedPreferences("uuid", Context.MODE_PRIVATE)
+        sharedPref
+                ?.edit()
+                ?.putString(R.string.uuid.toString(), "")
+                ?.apply()
     }
 }

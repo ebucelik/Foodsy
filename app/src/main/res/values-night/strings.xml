@@ -15,4 +15,6 @@
     <string name="you_have_already_an_account_sign_in">You have already an account? Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="create_account">Create Account</string>
+    <string name="firstname">Firstname</string>
+    <string name="uuid">UUID</string>
 </resources>

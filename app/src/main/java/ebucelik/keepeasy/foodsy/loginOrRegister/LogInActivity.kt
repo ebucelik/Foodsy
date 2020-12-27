@@ -1,5 +1,6 @@
 package ebucelik.keepeasy.foodsy.loginOrRegister
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -34,5 +35,6 @@ class LogInActivity : AppCompatActivity() {
 
     fun openHomeActivity(){
         startActivity(Intent(this@LogInActivity, HomeActivity::class.java))
+        finish()
     }
 }
