@@ -6,11 +6,11 @@ import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.View
 import com.google.gson.GsonBuilder
-import ebucelik.keepeasy.foodsy.adapter.MealListAdapter
 import ebucelik.keepeasy.foodsy.R
+import ebucelik.keepeasy.foodsy.adapter.OfferListAdapter
 import ebucelik.keepeasy.foodsy.databinding.FragmentSearchBinding
-import ebucelik.keepeasy.foodsy.meal.Meal
-import ebucelik.keepeasy.foodsy.meal.MealFeed
+import ebucelik.keepeasy.foodsy.entitiy.Offer
+import ebucelik.keepeasy.foodsy.entitiy.OfferList
 import okhttp3.*
 import java.io.IOException
 import java.lang.Exception
@@ -18,9 +18,8 @@ import java.lang.NullPointerException
 
 class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search) {
 
-    private lateinit var mealFeed: MealFeed
+    private lateinit var offerList: OfferList
     private lateinit var binding: FragmentSearchBinding
-    private var names: Array<String> = arrayOf("Ebu", "Gabriel", "Ahmedin", "Turgut", "Leon", "Max", "Abdi", "Haki", "Maxi", "Taxi", "Susi", "Sushi", "Taki", "Maki", "Saki", "Laki", "Fifa", "Fortnite", "CoD");
     private val homeActivity: HomeActivity = home
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,9 +46,9 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
         })
 
         binding.searchedMealsList.setOnItemClickListener { parent, view, position, id ->
-            val meal = parent.getItemAtPosition(position) as Meal
+            val offer = parent.getItemAtPosition(position) as Offer
             try {
-                homeActivity.openMealDetailActivity(names[position], meal.strMeal, meal.strMealThumb, meal.strCategory, meal.strArea, meal.strIngredient1, meal.strIngredient2, meal.strIngredient3)
+                homeActivity.openOfferDetailActivity(offer.mealName, "", offer.category, offer.category, "", "", "")
             }catch (e: ArrayIndexOutOfBoundsException){
                 e.printStackTrace()
             }
@@ -57,9 +56,12 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
     }
 
     private fun fetchJson(meal: String){
-        val url = "https://www.themealdb.com/api/json/v1/1/search.php?f=$meal"
+        val url = "http://10.0.2.2:8080/offeringSearch?mealName=$meal"
 
-        val request = Request.Builder().url(url).build()
+        val request = Request.Builder()
+                .url(url)
+                .get()
+                .build()
 
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback {
@@ -71,13 +73,13 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
                     if(body.isNullOrEmpty())
                         throw NullPointerException("Don't found any meals.")
 
-                    mealFeed = gson.fromJson(body, MealFeed::class.java)
+                    offerList = gson.fromJson(body, OfferList::class.java)
 
-                    if(mealFeed.meals.isNullOrEmpty())
+                    if(offerList.offerList.isNullOrEmpty())
                         throw NullPointerException("Don't found any meals.")
 
                     activity?.runOnUiThread {
-                        binding.searchedMealsList.adapter = MealListAdapter(activity?.baseContext!!, mealFeed, names)
+                        binding.searchedMealsList.adapter = OfferListAdapter(activity?.baseContext!!, offerList)
                     }
                 }catch (e: Exception){
                     e.printStackTrace()

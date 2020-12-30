@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodsy"
         android:usesCleartextTraffic="true">
-        <activity android:name=".meal.MealDetailActivity"></activity>
+        <activity android:name=".home.OfferDetailActivity"></activity>
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.

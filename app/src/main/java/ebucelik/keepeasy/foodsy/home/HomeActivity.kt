@@ -1,6 +1,5 @@
 package ebucelik.keepeasy.foodsy.home
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +8,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
-import ebucelik.keepeasy.foodsy.meal.Meal
-import ebucelik.keepeasy.foodsy.meal.MealDetailActivity
 
 class HomeActivity : AppCompatActivity() {
 
@@ -21,7 +18,6 @@ class HomeActivity : AppCompatActivity() {
     lateinit var tabLayout: TabLayout
 
     companion object{
-        const val USERNAME = "username"
         const val MEALNAME = "mealname"
         const val MEALIMAGE = "mealimage"
         const val MEALCATEGORY = "mealcategory"
@@ -64,9 +60,8 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun openMealDetailActivity(username: String, mealName: String, mealImageUrl: String, mealCategory: String, mealArea: String, ingredient1: String, ingredient2: String, ingredient3: String){
-        val intent = Intent(this@HomeActivity, MealDetailActivity::class.java)
-        intent.putExtra(USERNAME, username)
+    fun openOfferDetailActivity(mealName: String, mealImageUrl: String, mealCategory: String, mealArea: String, ingredient1: String, ingredient2: String, ingredient3: String){
+        val intent = Intent(this@HomeActivity, OfferDetailActivity::class.java)
         intent.putExtra(MEALNAME, mealName)
         intent.putExtra(MEALIMAGE, mealImageUrl)
         intent.putExtra(MEALCATEGORY, mealCategory)

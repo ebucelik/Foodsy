@@ -1,21 +1,14 @@
 package ebucelik.keepeasy.foodsy.loginOrRegister
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import com.google.gson.GsonBuilder
 import ebucelik.keepeasy.foodsy.R
-import ebucelik.keepeasy.foodsy.adapter.MealListAdapter
 import ebucelik.keepeasy.foodsy.databinding.FragmentRegistrationBinding
-import ebucelik.keepeasy.foodsy.home.HomeActivity
-import ebucelik.keepeasy.foodsy.meal.MealFeed
-import ebucelik.keepeasy.foodsy.user.User
+import ebucelik.keepeasy.foodsy.entitiy.User
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody

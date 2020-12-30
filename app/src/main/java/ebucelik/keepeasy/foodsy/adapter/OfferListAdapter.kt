@@ -5,25 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageView
 import android.widget.TextView
-import com.squareup.picasso.Picasso
 import ebucelik.keepeasy.foodsy.R
-import ebucelik.keepeasy.foodsy.meal.MealFeed
-import java.text.SimpleDateFormat
-import java.util.*
+import ebucelik.keepeasy.foodsy.entitiy.OfferList
 
-class MealListAdapter(context: Context, mealFeed: MealFeed, private val names: Array<String>) : BaseAdapter(){
+class OfferListAdapter(context: Context, offerList: OfferList) : BaseAdapter(){
 
     private val homeContext: Context = context
-    private val meal: MealFeed = mealFeed
+    private val offer: OfferList = offerList
 
     override fun getCount(): Int {
-        return meal.meals.size
+        return offer.offerList.size
     }
 
     override fun getItem(position: Int): Any {
-        return meal.meals[position]
+        return offer.offerList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -34,7 +30,7 @@ class MealListAdapter(context: Context, mealFeed: MealFeed, private val names: A
         val layoutInflater = LayoutInflater.from(homeContext)
         val rowHome = layoutInflater.inflate(R.layout.row_home, viewGroup, false)
 
-        val mealImage = rowHome.findViewById<ImageView>(R.id.mealImage)
+        /*val mealImage = rowHome.findViewById<ImageView>(R.id.mealImage)
         Picasso.get().load(meal.meals[position].strMealThumb).into(mealImage)
 
         val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
@@ -47,16 +43,16 @@ class MealListAdapter(context: Context, mealFeed: MealFeed, private val names: A
         }
 
         val offeredDate = rowHome.findViewById<TextView>(R.id.offeredDate)
-        offeredDate.text = "Date: "  + sdf.format(Date())
+        offeredDate.text = "Date: "  + sdf.format(Date())*/
 
         val mealName = rowHome.findViewById<TextView>(R.id.mealName)
-        mealName.text = meal.meals[position].strMeal
+        mealName.text = offer.offerList[position].mealName
 
         val mealCategory = rowHome.findViewById<TextView>(R.id.mealCategory)
-        mealCategory.text = meal.meals[position].strCategory
+        mealCategory.text = offer.offerList[position].category
 
         val mealArea = rowHome.findViewById<TextView>(R.id.mealArea)
-        mealArea.text = meal.meals[position].strArea
+        mealArea.text = offer.offerList[position].area
 
         return rowHome
     }

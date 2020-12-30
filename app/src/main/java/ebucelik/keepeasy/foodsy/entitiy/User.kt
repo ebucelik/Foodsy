@@ -1,4 +1,4 @@
-package ebucelik.keepeasy.foodsy.user
+package ebucelik.keepeasy.foodsy.entitiy
 
 class User(private val userUUID: String, private val username: String, private val firstname: String, private val surname: String, private val password: String) {
 

@@ -5,13 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.GsonBuilder
 import ebucelik.keepeasy.foodsy.home.HomeActivity
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
-import ebucelik.keepeasy.foodsy.user.User
 import okhttp3.*
 import java.io.IOException
 
@@ -26,14 +22,14 @@ class MainActivity : AppCompatActivity() {
     private fun showLogInScreen() {
         Handler().postDelayed({
             startActivity(Intent(this@MainActivity, LogInActivity::class.java))
-            finish() //If user go back, the app closes.
+            finish() //If entitiy go back, the app closes.
         }, 3000)
     }
 
     private fun showHomeScreen() {
         Handler().postDelayed({
             startActivity(Intent(this@MainActivity, HomeActivity::class.java))
-            finish() //If user go back, the app closes.
+            finish() //If entitiy go back, the app closes.
         }, 3000)
     }
 

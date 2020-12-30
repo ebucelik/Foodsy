@@ -3,10 +3,7 @@ package ebucelik.keepeasy.foodsy.home
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,13 +12,8 @@ import com.google.gson.GsonBuilder
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.account.OfferFragment
 import ebucelik.keepeasy.foodsy.account.OrderFragment
-import ebucelik.keepeasy.foodsy.databinding.FragmentAccountBinding
-import ebucelik.keepeasy.foodsy.user.User
+import ebucelik.keepeasy.foodsy.entitiy.User
 import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONException
-import org.json.JSONObject
 import java.io.IOException
 import java.util.ArrayList
 import kotlin.math.round
@@ -60,10 +52,10 @@ class AccountFragment(home: HomeActivity) : Fragment(R.layout.fragment_account) 
                 view.findViewById(R.id.rate5)
         )
 
-        offerFragment = OfferFragment()
-        orderFragment = OrderFragment()
+        offerFragment = OfferFragment(uuid)
+        orderFragment = OrderFragment(uuid)
 
-        setStarReviews()
+        getStarReview()
 
         accountTabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -87,9 +79,31 @@ class AccountFragment(home: HomeActivity) : Fragment(R.layout.fragment_account) 
         }
     }
 
-    private fun setStarReviews(){
-        val reviewInt = round(review).toInt()
+    private fun getStarReview(){
+        val url = "http://10.0.2.2:8080/reviewAverage?uuid=$uuid"
 
+        val request = Request.Builder()
+                .url(url)
+                .get()
+                .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object: Callback{
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+
+                if(response.code == 200){
+                    if (body != null) {
+                        setStarReviews(body.toInt())
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {}
+        })
+    }
+
+    private fun setStarReviews(reviewInt:Int){
         if(reviewInt >= 1){
             for (i in 0 until reviewInt){
                 rates[i].setImageResource(R.drawable.ic_round_star_rate_24_gold)

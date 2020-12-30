@@ -7,20 +7,10 @@
     android:paddingBottom="12dp">
 
     <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@mipmap/profilbild"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
         android:id="@+id/mealImage"
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:src="@mipmap/pomodorofusilli"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -31,32 +21,23 @@
         android:id="@+id/offeredDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:text="Offered Date"
-        app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
-
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Username"
         android:textSize="16dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toTopOf="@+id/profileImage" />
+        app:layout_constraintStart_toStartOf="@+id/mealName"
+        app:layout_constraintTop_toBottomOf="@+id/mealImage" />
 
     <TextView
         android:id="@+id/mealName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Meal name"
         android:textSize="20dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/profileImage"
-        app:layout_constraintTop_toBottomOf="@+id/profileImage" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/mealCategory"
@@ -64,8 +45,8 @@
         android:layout_height="wrap_content"
         android:text="Category"
         android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="@+id/mealName"
-        app:layout_constraintTop_toBottomOf="@+id/mealImage" />
+        app:layout_constraintStart_toStartOf="@+id/offeredDate"
+        app:layout_constraintTop_toBottomOf="@+id/offeredDate" />
 
     <TextView
         android:id="@+id/mealArea"
