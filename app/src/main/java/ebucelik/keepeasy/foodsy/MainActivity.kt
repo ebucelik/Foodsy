@@ -12,6 +12,10 @@ import okhttp3.*
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
+    companion object{
+        const val IP = "10.0.2.2"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,11 +39,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun readUUID(): String{
         val sharedPref = this.getSharedPreferences("uuid", Context.MODE_PRIVATE)
-        return sharedPref.getString(R.string.uuid.toString(), null) as String
+        return sharedPref.getString(R.string.uuid.toString(), "") as String
     }
 
     private fun getUser(){
-        val url = "http://10.0.2.2:8080/user?userUUID=${readUUID()}"
+        val url = "http://${MainActivity.IP}:8080/user?userUUID=${readUUID()}"
 
         val request = Request.Builder()
                 .url(url)

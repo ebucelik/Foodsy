@@ -20,55 +20,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/firstnameLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_round_person_add_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/registered"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:hint="@string/firstname"
-        app:boxBackgroundMode="outline"
-        app:errorEnabled="true"
-        app:helperTextEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/lastnameLayout"
+        android:layout_marginBottom="164dp"
+        android:layout_weight="1"
+
+        android:text="@string/you_have_already_an_account_sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:startIconDrawable="@drawable/ic_sharp_perm_contact_calendar_24">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/firstname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLength="25"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/lastnameLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/registerBtn"
+        style="@style/marginStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/lastname"
-        app:boxBackgroundMode="outline"
-        app:errorEnabled="true"
-        app:helperTextEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/usernameLayout"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/marginStartEnd"
+        android:layout_marginEnd="@dimen/marginStartEnd"
+        android:layout_marginBottom="8dp"
+        android:text="@string/create_account"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:startIconDrawable="@drawable/ic_sharp_perm_contact_calendar_24">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/lastname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLength="25"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameLayout"
@@ -81,7 +71,7 @@
         app:boxBackgroundMode="outline"
         app:errorEnabled="true"
         app:helperTextEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/passwordLayout"
+        app:layout_constraintTop_toBottomOf="@+id/lastnameLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +96,7 @@
         app:boxBackgroundMode="outline"
         app:errorEnabled="true"
         app:helperTextEnabled="true"
-        app:layout_constraintBottom_toTopOf="@+id/registered"
+        app:layout_constraintTop_toBottomOf="@+id/usernameLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,42 +106,65 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:maxLength="25"
             android:singleLine="true"
             tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="515dp"
-            android:inputType="textPassword"/>
+            tools:layout_editor_absoluteY="515dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/registered"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/firstnameLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="164dp"
-        android:layout_weight="1"
-
-        android:text="@string/you_have_already_an_account_sign_in"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:hint="@string/firstname"
+        app:boxBackgroundMode="outline"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileImage"
+        app:startIconDrawable="@drawable/ic_sharp_perm_contact_calendar_24">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/registerBtn"
-        style="@style/marginStyle"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/firstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="25"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lastnameLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="@dimen/marginStartEnd"
-        android:layout_marginEnd="@dimen/marginStartEnd"
-        android:layout_marginBottom="8dp"
-        android:text="@string/create_account"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/lastname"
+        app:boxBackgroundMode="outline"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/usernameLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstnameLayout"
+        app:startIconDrawable="@drawable/ic_sharp_perm_contact_calendar_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/lastname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="25"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

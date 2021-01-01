@@ -1,10 +1,17 @@
 package ebucelik.keepeasy.foodsy.loginOrRegister
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import androidx.core.graphics.drawable.toBitmap
 import com.google.gson.GsonBuilder
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentRegistrationBinding
@@ -14,6 +21,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 /**
@@ -22,10 +30,9 @@ import java.io.IOException
 class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_registration) {
 
     private lateinit var binding: FragmentRegistrationBinding
-
     private var logInActivity: LogInActivity = _logInActivity
-
     private lateinit var user: User
+    private var imageURI: Uri? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,11 +43,38 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
             logInActivity.changeFragment(logInActivity.loginFragment)
         }
 
+        binding.profileImage.setOnClickListener {
+            selectImageFromGallery()
+        }
+
         binding.registerBtn.setOnClickListener {
-            if(checkFirstname() && checkLastname() && checkUsername() && checkPassword()){
+            if(checkFirstname() && checkLastname() && checkUsername() && checkPassword() && checkProfileImageSelected()){
                 createUser()
             }
         }
+    }
+
+    private fun selectImageFromGallery(){
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        startActivityForResult(intent, 1)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == Activity.RESULT_OK && requestCode == 1){
+            imageURI = data?.data
+            binding.profileImage.setImageURI(imageURI)
+            encodeImage()
+        }
+    }
+
+    private fun encodeImage():String{
+        val bitmap = binding.profileImage.drawable.toBitmap()
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
     private fun checkFirstname(): Boolean{
@@ -95,12 +129,21 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
         }
     }
 
+    private fun checkProfileImageSelected(): Boolean{
+        return if(imageURI == null){
+            Toast.makeText(activity, "Please select a profile image.", Toast.LENGTH_SHORT).show()
+            false
+        }else{
+            true
+        }
+    }
+
     private fun createUser(){
         /*
         Normally our backend runs at localhost:8080 but the simulator uses also this port on the localhost for that reason
         we must use this IP address 10.0.2.2
         */
-        val url = "http://10.0.2.2:8080/user"
+        val url = "http://192.168.1.6:8080/user"
 
         val jsonObject = JSONObject()
 
@@ -109,6 +152,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
                     .put("firstname", binding.firstname.text.toString())
                     .put("surname", binding.lastname.text.toString())
                     .put("password", binding.password.text.toString())
+                    .put("profileImage", encodeImage())
         }catch (e: JSONException){
             e.printStackTrace()
         }

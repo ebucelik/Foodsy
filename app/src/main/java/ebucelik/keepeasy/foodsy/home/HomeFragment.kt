@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.adapter.OfferListAdapter
 import ebucelik.keepeasy.foodsy.databinding.FragmentHomeBinding
@@ -12,6 +13,7 @@ import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.OfferList
 import okhttp3.*
 import java.io.IOException
+import java.text.SimpleDateFormat
 
 class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
 
@@ -29,7 +31,7 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
         binding.homeListView.setOnItemClickListener { parent, view, position, id ->
             val offer = parent.getItemAtPosition(position) as Offer
             try {
-                homeActivity.openOfferDetailActivity(offer.mealName, "", offer.category, offer.area, "", "", "")
+                homeActivity.openOfferDetailActivity(offer)
             }catch (e: ArrayIndexOutOfBoundsException){
                 e.printStackTrace()
             }
@@ -42,7 +44,7 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
     }
 
     private fun getAllOffers(){
-        val url = "http://10.0.2.2:8080/offeringAll"
+        val url = "http://${MainActivity.IP}:8080/offeringAll"
 
         val request = Request.Builder()
                 .url(url)

@@ -1,7 +1,10 @@
 package ebucelik.keepeasy.foodsy.home
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
@@ -9,38 +12,38 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.account.OfferFragment
 import ebucelik.keepeasy.foodsy.account.OrderFragment
+import ebucelik.keepeasy.foodsy.entitiy.Order
 import ebucelik.keepeasy.foodsy.entitiy.User
 import okhttp3.*
 import java.io.IOException
 import java.util.ArrayList
 import kotlin.math.round
 
-class AccountFragment(home: HomeActivity) : Fragment(R.layout.fragment_account) {
+class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R.layout.fragment_account) {
 
-    private val review = 3.4
     private lateinit var offerFragment: OfferFragment
     private lateinit var orderFragment: OrderFragment
     private val homeActivity: HomeActivity = home
     private lateinit var rates: ArrayList<ImageView>
-    private lateinit var uuid: String
     private lateinit var user: User
     private lateinit var firstnameView: TextView
     private lateinit var lastnameView: TextView
     private lateinit var usernameView: TextView
+    private lateinit var profileImage: ImageView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        uuid = readUUID()
 
         //Binding don't work. Don't know why exactly but with the included TabItems it don't work.
         val accountTabLayout = view.findViewById<TabLayout>(R.id.accountTabLayout)
         firstnameView = view.findViewById(R.id.firstname)
         lastnameView = view.findViewById(R.id.lastname)
         usernameView = view.findViewById(R.id.username)
+        profileImage = view.findViewById(R.id.profileImage)
 
         getUser()
 
@@ -53,7 +56,7 @@ class AccountFragment(home: HomeActivity) : Fragment(R.layout.fragment_account) 
         )
 
         offerFragment = OfferFragment(uuid)
-        orderFragment = OrderFragment(uuid)
+        orderFragment = OrderFragment(uuid, homeActivity)
 
         getStarReview()
 
@@ -80,7 +83,7 @@ class AccountFragment(home: HomeActivity) : Fragment(R.layout.fragment_account) 
     }
 
     private fun getStarReview(){
-        val url = "http://10.0.2.2:8080/reviewAverage?uuid=$uuid"
+        val url = "http://${MainActivity.IP}:8080/reviewAverage?uuid=$uuid"
 
         val request = Request.Builder()
                 .url(url)
@@ -111,13 +114,8 @@ class AccountFragment(home: HomeActivity) : Fragment(R.layout.fragment_account) 
         }
     }
 
-    private fun readUUID(): String{
-        val sharedPref = activity?.getSharedPreferences("uuid", Context.MODE_PRIVATE)
-        return sharedPref?.getString(R.string.uuid.toString(), null) as String
-    }
-
     private fun getUser(){
-        val url = "http://10.0.2.2:8080/user?userUUID=$uuid"
+        val url = "http://${MainActivity.IP}:8080/user?userUUID=$uuid"
 
         val request = Request.Builder()
                 .url(url)
@@ -138,6 +136,7 @@ class AccountFragment(home: HomeActivity) : Fragment(R.layout.fragment_account) 
                             firstnameView.text = user.getFirstname()
                             lastnameView.text = user.getSurname()
                             usernameView.text = user.getUsername()
+                            profileImage.setImageBitmap(decodeImage(user.getProfileImage()))
                         }
                         404 -> {
                             Toast.makeText(activity, "User not found.", Toast.LENGTH_SHORT).show()
@@ -153,5 +152,10 @@ class AccountFragment(home: HomeActivity) : Fragment(R.layout.fragment_account) 
                 e.printStackTrace()
             }
         })
+    }
+
+    private fun decodeImage(encodedImage: String): Bitmap {
+        val imageBytes = Base64.decode(encodedImage, Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 }

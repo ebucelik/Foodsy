@@ -1,6 +1,8 @@
 package ebucelik.keepeasy.foodsy.entitiy
 
-class User(private val userUUID: String, private val username: String, private val firstname: String, private val surname: String, private val password: String) {
+import java.io.Serializable
+
+class User(private val userUUID: String, private val username: String, private val firstname: String, private val surname: String, private val password: String, private val profileImage: String) : Serializable {
 
     fun getUUID(): String{
         return userUUID
@@ -20,5 +22,9 @@ class User(private val userUUID: String, private val username: String, private v
 
     fun getPassword(): String{
         return password
+    }
+
+    fun getProfileImage(): String{
+        return profileImage
     }
 }

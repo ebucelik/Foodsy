@@ -1,5 +1,6 @@
 package ebucelik.keepeasy.foodsy.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +8,12 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import ebucelik.keepeasy.foodsy.R
+import ebucelik.keepeasy.foodsy.account.ReviewActivity
+import ebucelik.keepeasy.foodsy.entitiy.Offer
+import ebucelik.keepeasy.foodsy.entitiy.Order
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
+import java.lang.Exception
+import java.util.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -16,23 +22,24 @@ class HomeActivity : AppCompatActivity() {
     lateinit var sellFragment: SellFragment
     lateinit var accountFragment: AccountFragment
     lateinit var tabLayout: TabLayout
+    lateinit var uuid: String
 
     companion object{
-        const val MEALNAME = "mealname"
-        const val MEALIMAGE = "mealimage"
-        const val MEALCATEGORY = "mealcategory"
-        const val MEALAREA = "mealarea"
-        const val INGREDIENTS = "ingredients"
+        const val ORDERINGUUID = "orderinguuid"
+        const val OFFER = "offer"
+        const val ORDER = "order"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        uuid = readUUID()
+
         homeFragment = HomeFragment(this)
         searchFragment = SearchFragment(this)
-        sellFragment = SellFragment()
-        accountFragment = AccountFragment(this)
+        sellFragment = SellFragment(uuid)
+        accountFragment = AccountFragment(this, uuid)
 
         tabLayout = findViewById(R.id.tabLayout)
 
@@ -60,14 +67,15 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun openOfferDetailActivity(mealName: String, mealImageUrl: String, mealCategory: String, mealArea: String, ingredient1: String, ingredient2: String, ingredient3: String){
-        val intent = Intent(this@HomeActivity, OfferDetailActivity::class.java)
-        intent.putExtra(MEALNAME, mealName)
-        intent.putExtra(MEALIMAGE, mealImageUrl)
-        intent.putExtra(MEALCATEGORY, mealCategory)
-        intent.putExtra(MEALAREA, mealArea)
-        intent.putExtra(INGREDIENTS, "$ingredient1, $ingredient2, $ingredient3")
-        startActivity(intent)
+    fun openOfferDetailActivity(offer: Offer){
+        try {
+            val intent = Intent(this@HomeActivity, OfferDetailActivity::class.java)
+            intent.putExtra(ORDERINGUUID, uuid)
+            intent.putExtra(OFFER, offer)
+            startActivity(intent)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     fun openLoginActivity(){
@@ -75,5 +83,16 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
         finish() //The HomeActivity has to views if I click on the back button. Don't know why but to kill both I must call twice finish()
         finish()
+    }
+
+    fun openReviewActivity(order: Order){
+        val intent = Intent(this@HomeActivity, ReviewActivity::class.java)
+        intent.putExtra(ORDER, order)
+        startActivity(intent)
+    }
+
+    private fun readUUID(): String{
+        val sharedPref = this.getSharedPreferences("uuid", Context.MODE_PRIVATE)
+        return sharedPref.getString(R.string.uuid.toString(), "") as String
     }
 }

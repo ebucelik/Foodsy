@@ -1,4 +1,6 @@
 package ebucelik.keepeasy.foodsy.entitiy
 
-class Order(val id:Long, val orderingUuid:String, val offeringUuid:String, val offeringId:Long) {
+import java.io.Serializable
+
+class Order(val id:Long, val orderingUuid:String, val offeringUuid:String, val offeringId:Long, val offer:Offer) : Serializable {
 }

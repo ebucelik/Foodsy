@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentLogInBinding
 import okhttp3.*
@@ -71,7 +72,7 @@ class LogInFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_
     }
 
     private fun login(){
-        val url = "http://10.0.2.2:8080/login"
+        val url = "http://${MainActivity.IP}:8080/login"
 
         val jsonObject = JSONObject()
 

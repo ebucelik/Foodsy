@@ -1,13 +1,19 @@
 package ebucelik.keepeasy.foodsy.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.entitiy.OfferList
+import java.text.SimpleDateFormat
+
 
 class OfferListAdapter(context: Context, offerList: OfferList) : BaseAdapter(){
 
@@ -30,30 +36,40 @@ class OfferListAdapter(context: Context, offerList: OfferList) : BaseAdapter(){
         val layoutInflater = LayoutInflater.from(homeContext)
         val rowHome = layoutInflater.inflate(R.layout.row_home, viewGroup, false)
 
-        /*val mealImage = rowHome.findViewById<ImageView>(R.id.mealImage)
-        Picasso.get().load(meal.meals[position].strMealThumb).into(mealImage)
-
-        val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN)
-
-        val username = rowHome.findViewById<TextView>(R.id.username)
-        try {
-            username.text = names[position]
-        }catch (e: ArrayIndexOutOfBoundsException){
-            e.printStackTrace()
-        }
-
-        val offeredDate = rowHome.findViewById<TextView>(R.id.offeredDate)
-        offeredDate.text = "Date: "  + sdf.format(Date())*/
-
         val mealName = rowHome.findViewById<TextView>(R.id.mealName)
         mealName.text = offer.offerList[position].mealName
-
-        val mealCategory = rowHome.findViewById<TextView>(R.id.mealCategory)
-        mealCategory.text = offer.offerList[position].category
 
         val mealArea = rowHome.findViewById<TextView>(R.id.mealArea)
         mealArea.text = offer.offerList[position].area
 
+        val mealOfferDate = rowHome.findViewById<TextView>(R.id.offeredDate)
+
+        val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        mealOfferDate.text = simpleDateFormat.format(offer.offerList[position].currentTimestamp)
+
+        val mealImage = rowHome.findViewById<ImageView>(R.id.mealImage)
+        try {
+            if(offer.offerList[position].encodedImage != null){
+                mealImage.setImageBitmap(decodeImage(offer.offerList[position].encodedImage))
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+
+        val mealProfileImage = rowHome.findViewById<ImageView>(R.id.profileImage)
+        try {
+            if(offer.offerList[position].user.getProfileImage() != null){
+                mealProfileImage.setImageBitmap(decodeImage(offer.offerList[position].user.getProfileImage()))
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+
         return rowHome
+    }
+
+    private fun decodeImage(encodedImage: String):Bitmap{
+        val imageBytes = Base64.decode(encodedImage, Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 }

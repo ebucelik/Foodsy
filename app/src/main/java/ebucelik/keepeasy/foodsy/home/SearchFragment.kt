@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.View
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.adapter.OfferListAdapter
 import ebucelik.keepeasy.foodsy.databinding.FragmentSearchBinding
@@ -15,6 +16,7 @@ import okhttp3.*
 import java.io.IOException
 import java.lang.Exception
 import java.lang.NullPointerException
+import java.text.SimpleDateFormat
 
 class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search) {
 
@@ -48,7 +50,7 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
         binding.searchedMealsList.setOnItemClickListener { parent, view, position, id ->
             val offer = parent.getItemAtPosition(position) as Offer
             try {
-                homeActivity.openOfferDetailActivity(offer.mealName, "", offer.category, offer.category, "", "", "")
+                homeActivity.openOfferDetailActivity(offer)
             }catch (e: ArrayIndexOutOfBoundsException){
                 e.printStackTrace()
             }
@@ -56,7 +58,7 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
     }
 
     private fun fetchJson(meal: String){
-        val url = "http://10.0.2.2:8080/offeringSearch?mealName=$meal"
+        val url = "http://${MainActivity.IP}:8080/offeringSearch?mealName=$meal"
 
         val request = Request.Builder()
                 .url(url)
@@ -66,7 +68,7 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response){
-                val body = response?.body?.string()
+                val body = response.body?.string()
 
                 val gson = GsonBuilder().create()
                 try {
