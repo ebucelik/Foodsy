@@ -187,6 +187,8 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
                         }
                     }
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {

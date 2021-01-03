@@ -72,13 +72,17 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
 
                 val gson = GsonBuilder().create()
                 try {
-                    if(body.isNullOrEmpty())
+                    if(body.isNullOrEmpty()){
+                        response.close()
                         throw NullPointerException("Don't found any meals.")
+                    }
 
                     offerList = gson.fromJson(body, OfferList::class.java)
 
-                    if(offerList.offerList.isNullOrEmpty())
+                    if(offerList.offerList.isNullOrEmpty()){
+                        response.close()
                         throw NullPointerException("Don't found any meals.")
+                    }
 
                     activity?.runOnUiThread {
                         binding.searchedMealsList.adapter = OfferListAdapter(activity?.baseContext!!, offerList)
@@ -86,10 +90,12 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
                 }catch (e: Exception){
                     e.printStackTrace()
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {
-                println("Failure")
+                e.printStackTrace()
             }
         })
     }

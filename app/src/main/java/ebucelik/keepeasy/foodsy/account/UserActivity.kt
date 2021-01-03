@@ -86,6 +86,8 @@ class UserActivity : AppCompatActivity() {
                         setStarReviews(body.toInt())
                     }
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {}

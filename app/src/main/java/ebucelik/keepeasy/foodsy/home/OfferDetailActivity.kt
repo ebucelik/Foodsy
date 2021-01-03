@@ -108,9 +108,13 @@ class OfferDetailActivity : AppCompatActivity() {
                         finish()
                     }
                 }
+
+                response.close()
             }
 
-            override fun onFailure(call: Call, e: IOException) {}
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
         })
     }
 

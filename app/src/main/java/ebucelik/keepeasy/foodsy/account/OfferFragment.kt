@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.adapter.OfferListAdapter
 import ebucelik.keepeasy.foodsy.databinding.FragmentOfferBinding
@@ -25,10 +26,11 @@ class OfferFragment(private val uuid:String) : Fragment(R.layout.fragment_offer)
     }
 
     private fun getOfferedMeals(){
-        val url = "http://192.168.1.6:8080/offering?uuid=$uuid"
+        val url = "http://${MainActivity.IP}:8080/offering?uuid=$uuid"
 
         val request = Request.Builder()
                 .url(url)
+                .get()
                 .build()
 
         val client = OkHttpClient()
@@ -42,10 +44,12 @@ class OfferFragment(private val uuid:String) : Fragment(R.layout.fragment_offer)
                 activity?.runOnUiThread {
                     binding.offerListView.adapter = OfferListAdapter(activity?.baseContext!!, offerList)
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {
-                println("Failure")
+                e.printStackTrace()
             }
         })
     }

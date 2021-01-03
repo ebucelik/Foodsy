@@ -112,7 +112,7 @@ class SellFragment(private val uuid:String) : Fragment(R.layout.fragment_sell) {
     private fun encodeImage():String{
         val bitmap = binding.mealImage.drawable.toBitmap()
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         val byteArray = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
@@ -152,11 +152,16 @@ class SellFragment(private val uuid:String) : Fragment(R.layout.fragment_sell) {
                         binding.mealCategory.setText("")
                         binding.mealArea.setText("")
                         binding.mealIngredients.setText("")
+                        binding.mealImage.setImageResource(R.drawable.ic_round_add_photo_alternate_24)
                     }
                 }
+
+                response.close()
             }
 
-            override fun onFailure(call: Call, e: IOException) {}
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
         })
     }
 }

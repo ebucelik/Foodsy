@@ -136,6 +136,8 @@ class ReviewActivity : AppCompatActivity() {
                         Toast.makeText(baseContext, "Server error.", Toast.LENGTH_SHORT).show()
                     }
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {}

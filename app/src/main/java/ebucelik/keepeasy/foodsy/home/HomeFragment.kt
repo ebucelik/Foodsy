@@ -64,10 +64,12 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
                         binding.homeListView.adapter = OfferListAdapter(activity?.baseContext!!, offerList)
                     }
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {
-                println("Failure")
+                e.printStackTrace()
             }
         })
     }

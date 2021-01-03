@@ -26,14 +26,14 @@ class MainActivity : AppCompatActivity() {
     private fun showLogInScreen() {
         Handler().postDelayed({
             startActivity(Intent(this@MainActivity, LogInActivity::class.java))
-            finish() //If entitiy go back, the app closes.
+            finish() //If entity go back, the app closes.
         }, 3000)
     }
 
     private fun showHomeScreen() {
         Handler().postDelayed({
             startActivity(Intent(this@MainActivity, HomeActivity::class.java))
-            finish() //If entitiy go back, the app closes.
+            finish() //If entity go back, the app closes.
         }, 3000)
     }
 
@@ -69,6 +69,8 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {

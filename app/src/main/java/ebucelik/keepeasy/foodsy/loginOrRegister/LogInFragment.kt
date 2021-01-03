@@ -113,6 +113,8 @@ class LogInFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_
                         }
                     }
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {

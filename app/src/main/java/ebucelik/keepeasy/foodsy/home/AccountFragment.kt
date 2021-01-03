@@ -100,6 +100,8 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
                         setStarReviews(body.toInt())
                     }
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {}
@@ -125,7 +127,7 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response){
-                val body = response?.body?.string()
+                val body = response.body?.string()
 
                 val gson = GsonBuilder().create()
                 user = gson.fromJson(body, User::class.java)
@@ -146,6 +148,8 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
                         }
                     }
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {

@@ -59,10 +59,12 @@ class OrderFragment(private val uuid:String, private val homeActivity: HomeActiv
                 activity?.runOnUiThread {
                     binding.orderListView.adapter = OrderListAdapter(activity?.baseContext!!, orderList)
                 }
+
+                response.close()
             }
 
             override fun onFailure(call: Call, e: IOException) {
-                println("Failure")
+                e.printStackTrace()
             }
         })
     }
