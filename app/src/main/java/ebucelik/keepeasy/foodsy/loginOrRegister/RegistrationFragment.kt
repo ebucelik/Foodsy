@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentRegistrationBinding
 import ebucelik.keepeasy.foodsy.entitiy.User
@@ -143,7 +144,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
         Normally our backend runs at localhost:8080 but the simulator uses also this port on the localhost for that reason
         we must use this IP address 10.0.2.2
         */
-        val url = "http://192.168.1.6:8080/user"
+        val url = "http://${MainActivity.IP}:8080/user"
 
         val jsonObject = JSONObject()
 
