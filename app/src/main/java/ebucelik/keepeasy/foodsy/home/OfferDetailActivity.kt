@@ -52,7 +52,7 @@ class OfferDetailActivity : AppCompatActivity() {
         orderingUserUuid = intent.getStringExtra(HomeActivity.ORDERINGUUID).toString()
         val offer = intent.getSerializableExtra(HomeActivity.OFFER) as Offer
         val offeringId = offer.id
-        offeredUserUuid = offer.userUUID
+        offeredUserUuid = offer.user.getUUID()
         mealName.text = offer.mealName
         mealCategory.text = offer.category
         mealArea.text = offer.area
@@ -84,9 +84,8 @@ class OfferDetailActivity : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try{
-            jsonObject.put("orderingUuid", orderingUserUuid)
-                    .put("offeringUuid", offeredUserUuid)
-                    .put("offeringId", offeringId)
+            jsonObject.put("userUUID", orderingUserUuid)
+                    .put("offerId", offeringId)
         }catch (e: JSONException){
             e.printStackTrace()
         }

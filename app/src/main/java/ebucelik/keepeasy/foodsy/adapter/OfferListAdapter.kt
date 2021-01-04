@@ -21,11 +21,11 @@ class OfferListAdapter(context: Context, offerList: OfferList) : BaseAdapter(){
     private val offer: OfferList = offerList
 
     override fun getCount(): Int {
-        return offer.offerList.size
+        return offer.offeringList.size
     }
 
     override fun getItem(position: Int): Any {
-        return offer.offerList[position]
+        return offer.offeringList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -37,20 +37,20 @@ class OfferListAdapter(context: Context, offerList: OfferList) : BaseAdapter(){
         val rowHome = layoutInflater.inflate(R.layout.row_home, viewGroup, false)
 
         val mealName = rowHome.findViewById<TextView>(R.id.mealName)
-        mealName.text = offer.offerList[position].mealName
+        mealName.text = offer.offeringList[position].mealName
 
         val mealArea = rowHome.findViewById<TextView>(R.id.mealArea)
-        mealArea.text = offer.offerList[position].area
+        mealArea.text = offer.offeringList[position].area
 
         val mealOfferDate = rowHome.findViewById<TextView>(R.id.offeredDate)
 
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
-        mealOfferDate.text = simpleDateFormat.format(offer.offerList[position].currentTimestamp)
+        mealOfferDate.text = simpleDateFormat.format(offer.offeringList[position].currentTimestamp)
 
         val mealImage = rowHome.findViewById<ImageView>(R.id.mealImage)
         try {
-            if(offer.offerList[position].encodedImage != null){
-                mealImage.setImageBitmap(decodeImage(offer.offerList[position].encodedImage))
+            if(offer.offeringList[position].encodedImage != null){
+                mealImage.setImageBitmap(decodeImage(offer.offeringList[position].encodedImage))
             }
         }catch (e: Exception){
             e.printStackTrace()
@@ -58,8 +58,8 @@ class OfferListAdapter(context: Context, offerList: OfferList) : BaseAdapter(){
 
         val mealProfileImage = rowHome.findViewById<ImageView>(R.id.profileImage)
         try {
-            if(offer.offerList[position].user.getProfileImage() != null){
-                mealProfileImage.setImageBitmap(decodeImage(offer.offerList[position].user.getProfileImage()))
+            if(offer.offeringList[position].user.getProfileImage() != null){
+                mealProfileImage.setImageBitmap(decodeImage(offer.offeringList[position].user.getProfileImage()))
             }
         }catch (e: Exception){
             e.printStackTrace()

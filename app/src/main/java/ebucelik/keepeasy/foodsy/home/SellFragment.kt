@@ -118,18 +118,19 @@ class SellFragment(private val uuid:String) : Fragment(R.layout.fragment_sell) {
     }
 
     private fun createOffer(){
-        val url = "http://${MainActivity.IP}:8080/offering"
+        val url = "http://${MainActivity.IP}:8080/offer"
 
         val jsonObject = JSONObject()
 
         try {
-            jsonObject.put("userUUID", uuid)
+            jsonObject
                     .put("mealName", binding.mealName.text)
                     .put("category", binding.mealCategory.text)
                     .put("area", binding.mealArea.text)
                     .put("encodedImage", encodeImage())
                     .put("ingredients", binding.mealIngredients.text)
-                    .put("currentTimestamp", LocalDateTime.now())
+                    .put("timestamp", LocalDateTime.now())
+                    .put("userUUID", uuid)
         }catch (e: JSONException){
             e.printStackTrace()
         }

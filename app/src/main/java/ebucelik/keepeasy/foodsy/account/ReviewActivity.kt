@@ -52,7 +52,7 @@ class ReviewActivity : AppCompatActivity() {
         val profileImage = findViewById<ImageView>(R.id.profileImage)
 
         order = intent.getSerializableExtra(HomeActivity.ORDER) as Order
-        offeredUserUuid = order.offer.userUUID
+        offeredUserUuid = order.offer.user.getUUID()
         mealName.text = order.offer.mealName
         mealCategory.text = order.offer.category
         mealArea.text = order.offer.area
@@ -109,9 +109,9 @@ class ReviewActivity : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try{
-            jsonObject.put("reviewedId", order.offeringUuid)
-                    .put("orderId", order.id)
+            jsonObject
                     .put("reviewPoints", reviewedPoints)
+                    .put("orderId", order.id)
                     .put("reviewText", "")
         }catch (e: JSONException){
             e.printStackTrace()

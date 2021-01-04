@@ -73,7 +73,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
     private fun encodeImage():String{
         val bitmap = binding.profileImage.drawable.toBitmap()
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         val byteArray = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }

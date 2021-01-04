@@ -58,7 +58,7 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
     }
 
     private fun fetchJson(meal: String){
-        val url = "http://${MainActivity.IP}:8080/offeringSearch?mealName=$meal"
+        val url = "http://${MainActivity.IP}:8080/offer?mealName=$meal"
 
         val request = Request.Builder()
                 .url(url)
@@ -79,7 +79,7 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
 
                     offerList = gson.fromJson(body, OfferList::class.java)
 
-                    if(offerList.offerList.isNullOrEmpty()){
+                    if(offerList.offeringList.isNullOrEmpty()){
                         response.close()
                         throw NullPointerException("Don't found any meals.")
                     }

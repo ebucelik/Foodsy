@@ -26,7 +26,7 @@ class OfferFragment(private val uuid:String) : Fragment(R.layout.fragment_offer)
     }
 
     private fun getOfferedMeals(){
-        val url = "http://${MainActivity.IP}:8080/offering?uuid=$uuid"
+        val url = "http://${MainActivity.IP}:8080/offer?uuid=$uuid"
 
         val request = Request.Builder()
                 .url(url)
