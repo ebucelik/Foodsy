@@ -95,7 +95,8 @@ class SellFragment(private val uuid:String) : Fragment(R.layout.fragment_sell) {
     }
 
     private fun selectImageFromGallery(){
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        intent.type = "image/*"
         startActivityForResult(intent, REQUEST_SELECT_IMAGE_IN_ALBUM)
     }
 
