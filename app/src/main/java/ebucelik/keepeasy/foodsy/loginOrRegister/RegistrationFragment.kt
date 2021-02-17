@@ -56,7 +56,8 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
     }
 
     private fun selectImageFromGallery(){
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        intent.type = "image/*"
         startActivityForResult(intent, 1)
     }
 
@@ -73,7 +74,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
     private fun encodeImage():String{
         val bitmap = binding.profileImage.drawable.toBitmap()
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
