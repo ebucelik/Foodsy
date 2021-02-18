@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.entitiy.User
 import ebucelik.keepeasy.foodsy.home.HomeActivity
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
 import okhttp3.*
@@ -20,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getUser()
+        getUser(readUUID())
     }
 
     private fun showLogInScreen() {
@@ -42,8 +44,8 @@ class MainActivity : AppCompatActivity() {
         return sharedPref.getString(R.string.uuid.toString(), "") as String
     }
 
-    private fun getUser(){
-        val url = "http://${MainActivity.IP}:8080/user?userUUID=${readUUID()}"
+    fun getUser(uuid: String){
+        val url = "http://${IP}:8080/user?userUUID=${uuid}"
 
         val request = Request.Builder()
                 .url(url)
@@ -53,18 +55,13 @@ class MainActivity : AppCompatActivity() {
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response){
-                Handler(Looper.getMainLooper()).post {
-                    if(response.code == 200){
-                        showHomeScreen()
-                    }else{
-                        showLogInScreen()
-                    }
 
+                Handler(Looper.getMainLooper()).post {
                     when(response.code){
                         200 -> {
                             showHomeScreen()
                         }
-                        404 -> {
+                        else -> {
                             showLogInScreen()
                         }
                     }

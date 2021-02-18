@@ -2,6 +2,7 @@ package ebucelik.keepeasy.foodsy
 
 import org.junit.Assert
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -11,6 +12,6 @@ import org.junit.Test
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        Assert.assertEquals(4, 2 + 2.toLong())
+        assertEquals(5, 2+3)
     }
 }
