@@ -11,11 +11,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.account.UserActivity
+import ebucelik.keepeasy.foodsy.databinding.ActivityMealDetailBinding
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.User
 import okhttp3.*
@@ -31,15 +33,18 @@ class OfferDetailActivity : AppCompatActivity() {
     private lateinit var offeredUserUuid: String
     private lateinit var orderingUserUuid: String
 
+    private lateinit var binding: ActivityMealDetailBinding
+
     companion object{
         const val USER = "user"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_meal_detail)
 
-        val username = findViewById<TextView>(R.id.username)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_meal_detail)
+
+        /*val username = findViewById<TextView>(R.id.username)
         val mealName = findViewById<TextView>(R.id.mealName)
         val mealImage = findViewById<ImageView>(R.id.mealImage)
         val mealCategory = findViewById<TextView>(R.id.mealCategory)
@@ -47,34 +52,37 @@ class OfferDetailActivity : AppCompatActivity() {
         val mealIngredients = findViewById<TextView>(R.id.mealIngredients)
         val orderMeal = findViewById<Button>(R.id.orderBtn)
         val offeredDate = findViewById<TextView>(R.id.offeredDate)
-        val profileImage = findViewById<ImageView>(R.id.profileImage)
+        val profileImage = findViewById<ImageView>(R.id.profileImage)*/
 
         orderingUserUuid = intent.getStringExtra(HomeActivity.ORDERINGUUID).toString()
         val offer = intent.getSerializableExtra(HomeActivity.OFFER) as Offer
         val offeringId = offer.id
+
+        binding.meal = offer
+
         offeredUserUuid = offer.user.getUUID()
-        mealName.text = offer.mealName
-        mealCategory.text = offer.category
-        mealArea.text = offer.area
-        mealIngredients.text = offer.ingredients
+        /*binding.mealName.text = offer.mealName
+        binding.mealCategory.text = offer.category
+        binding.mealArea.text = offer.area
+        binding.mealIngredients.text = offer.ingredients*/
 
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
-        offeredDate.text = simpleDateFormat.format(offer.currentTimestamp)
-        username.text = offer.user.getUsername()
+        binding.offeredDate.text = simpleDateFormat.format(offer.currentTimestamp)
+        //binding.username.text = offer.user.getUsername()
 
         if(offer.encodedImage != ""){
-            mealImage.setImageBitmap(decodeImage(offer.encodedImage))
+            binding.mealImage.setImageBitmap(decodeImage(offer.encodedImage))
         }
 
         if(offer.user.getProfileImage() != ""){
-            profileImage.setImageBitmap(decodeImage(offer.user.getProfileImage()))
+            binding.profileImage.setImageBitmap(decodeImage(offer.user.getProfileImage()))
         }
 
-        orderMeal.setOnClickListener {
+        binding.orderBtn.setOnClickListener {
             orderMeal(offeringId)
         }
 
-        profileImage.setOnClickListener {
+        binding.profileImage.setOnClickListener {
             openUserProfile(offer.user)
         }
     }
