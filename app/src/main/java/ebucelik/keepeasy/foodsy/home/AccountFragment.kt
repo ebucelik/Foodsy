@@ -135,10 +135,10 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
                 activity?.runOnUiThread {
                     when(response.code){
                         200 -> {
-                            firstnameView.text = user.getFirstname()
-                            lastnameView.text = user.getSurname()
-                            usernameView.text = user.getUsername()
-                            profileImage.setImageBitmap(decodeImage(user.getProfileImage()))
+                            firstnameView.text = user.firstname
+                            lastnameView.text = user.surname
+                            usernameView.text = user.username
+                            profileImage.setImageBitmap(decodeImage(user.profileImage))
                         }
                         404 -> {
                             Toast.makeText(activity, "User not found.", Toast.LENGTH_SHORT).show()

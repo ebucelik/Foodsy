@@ -203,7 +203,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
         val sharedPref = activity?.getSharedPreferences("uuid", Context.MODE_PRIVATE)
         sharedPref
                 ?.edit()
-                ?.putString(R.string.uuid.toString(), user.getUUID())
+                ?.putString(R.string.uuid.toString(), user.userUUID)
                 ?.apply()
     }
 }

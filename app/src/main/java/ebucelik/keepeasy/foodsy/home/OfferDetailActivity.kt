@@ -30,9 +30,8 @@ import java.text.SimpleDateFormat
 
 class OfferDetailActivity : AppCompatActivity() {
 
-    private lateinit var offeredUserUuid: String
     private lateinit var orderingUserUuid: String
-
+    private lateinit var offer: Offer
     private lateinit var binding: ActivityMealDetailBinding
 
     companion object{
@@ -44,42 +43,24 @@ class OfferDetailActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_meal_detail)
 
-        /*val username = findViewById<TextView>(R.id.username)
-        val mealName = findViewById<TextView>(R.id.mealName)
-        val mealImage = findViewById<ImageView>(R.id.mealImage)
-        val mealCategory = findViewById<TextView>(R.id.mealCategory)
-        val mealArea = findViewById<TextView>(R.id.mealArea)
-        val mealIngredients = findViewById<TextView>(R.id.mealIngredients)
-        val orderMeal = findViewById<Button>(R.id.orderBtn)
-        val offeredDate = findViewById<TextView>(R.id.offeredDate)
-        val profileImage = findViewById<ImageView>(R.id.profileImage)*/
-
         orderingUserUuid = intent.getStringExtra(HomeActivity.ORDERINGUUID).toString()
-        val offer = intent.getSerializableExtra(HomeActivity.OFFER) as Offer
-        val offeringId = offer.id
+        offer = intent.getSerializableExtra(HomeActivity.OFFER) as Offer
 
         binding.meal = offer
 
-        offeredUserUuid = offer.user.getUUID()
-        /*binding.mealName.text = offer.mealName
-        binding.mealCategory.text = offer.category
-        binding.mealArea.text = offer.area
-        binding.mealIngredients.text = offer.ingredients*/
-
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
         binding.offeredDate.text = simpleDateFormat.format(offer.currentTimestamp)
-        //binding.username.text = offer.user.getUsername()
 
         if(offer.encodedImage != ""){
             binding.mealImage.setImageBitmap(decodeImage(offer.encodedImage))
         }
 
-        if(offer.user.getProfileImage() != ""){
-            binding.profileImage.setImageBitmap(decodeImage(offer.user.getProfileImage()))
+        if(offer.user.profileImage != ""){
+            binding.profileImage.setImageBitmap(decodeImage(offer.user.profileImage))
         }
 
         binding.orderBtn.setOnClickListener {
-            orderMeal(offeringId)
+            orderMeal(offer.id)
         }
 
         binding.profileImage.setOnClickListener {
