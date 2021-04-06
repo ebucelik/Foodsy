@@ -14,6 +14,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
+import ebucelik.keepeasy.foodsy.UserGlobal
+import ebucelik.keepeasy.foodsy.UserGlobal.user
 import ebucelik.keepeasy.foodsy.account.OfferFragment
 import ebucelik.keepeasy.foodsy.account.OrderFragment
 import ebucelik.keepeasy.foodsy.entitiy.Order
@@ -29,7 +31,7 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
     private lateinit var orderFragment: OrderFragment
     private val homeActivity: HomeActivity = home
     private lateinit var rates: ArrayList<ImageView>
-    private lateinit var user: User
+    //private lateinit var user: User
     private lateinit var firstnameView: TextView
     private lateinit var lastnameView: TextView
     private lateinit var usernameView: TextView
@@ -45,7 +47,8 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
         usernameView = view.findViewById(R.id.username)
         profileImage = view.findViewById(R.id.profileImage)
 
-        getUser()
+        //getUser()
+        initUserDetails()
 
         rates = arrayListOf(
                 view.findViewById(R.id.rate1),
@@ -116,6 +119,14 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
         }
     }
 
+    private fun initUserDetails(){
+        firstnameView.text = user.firstname
+        lastnameView.text = user.surname
+        usernameView.text = user.username
+        profileImage.setImageBitmap(decodeImage(user.profileImage))
+    }
+
+    /*
     private fun getUser(){
         val url = "http://${MainActivity.IP}:8080/user?userUUID=$uuid"
 
@@ -156,7 +167,7 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
                 e.printStackTrace()
             }
         })
-    }
+    }*/
 
     private fun decodeImage(encodedImage: String): Bitmap {
         val imageBytes = Base64.decode(encodedImage, Base64.DEFAULT)
