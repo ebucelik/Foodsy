@@ -86,7 +86,7 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
     }
 
     private fun getStarReview(){
-        val url = "http://${MainActivity.IP}:8080/reviewAverage?uuid=$uuid"
+        val url = "${MainActivity.IP}/reviewAverage?uuid=$uuid"
 
         val request = Request.Builder()
                 .url(url)
@@ -128,7 +128,7 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
 
     /*
     private fun getUser(){
-        val url = "http://${MainActivity.IP}:8080/user?userUUID=$uuid"
+        val url = "${MainActivity.IP}/user?userUUID=$uuid"
 
         val request = Request.Builder()
                 .url(url)

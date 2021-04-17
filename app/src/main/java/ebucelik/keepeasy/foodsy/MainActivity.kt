@@ -20,7 +20,8 @@ object UserGlobal{
 
 class MainActivity : AppCompatActivity() {
     companion object{
-        const val IP = "10.0.2.2"
+        const val IP = "http://10.0.2.2:8080"
+        //const val IP = "https://myfood-backend.herokuapp.com"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUser(uuid: String){
-        val url = "http://${IP}:8080/user?userUUID=${uuid}"
+        val url = "${IP}/user?userUUID=${uuid}"
 
         val request = Request.Builder()
                 .url(url)

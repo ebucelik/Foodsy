@@ -44,7 +44,7 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
     }
 
     private fun getAllOffers(){
-        val url = "http://${MainActivity.IP}:8080/offer"
+        val url = "${MainActivity.IP}/offer"
 
         val request = Request.Builder()
                 .url(url)

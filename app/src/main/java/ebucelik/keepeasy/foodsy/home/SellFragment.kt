@@ -119,7 +119,7 @@ class SellFragment(private val uuid:String) : Fragment(R.layout.fragment_sell) {
     }
 
     private fun createOffer(){
-        val url = "http://${MainActivity.IP}:8080/offer"
+        val url = "${MainActivity.IP}/offer"
 
         val jsonObject = JSONObject()
 

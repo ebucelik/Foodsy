@@ -69,7 +69,7 @@ class OfferDetailActivity : AppCompatActivity() {
     }
 
     private fun orderMeal(offeringId:Long){
-        val url = "http://${MainActivity.IP}:8080/ordering"
+        val url = "${MainActivity.IP}/ordering"
 
         val jsonObject = JSONObject()
         try{

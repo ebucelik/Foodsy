@@ -105,7 +105,7 @@ class ReviewActivity : AppCompatActivity() {
     }
 
     private fun sendReview(){
-        val url = "http://${MainActivity.IP}:8080/review"
+        val url = "${MainActivity.IP}/review"
 
         val jsonObject = JSONObject()
         try{

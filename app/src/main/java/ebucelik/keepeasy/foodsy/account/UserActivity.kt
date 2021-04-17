@@ -69,7 +69,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun getStarReview(){
-        val url = "http://${MainActivity.IP}:8080/reviewAverage?uuid=${user.userUUID}"
+        val url = "${MainActivity.IP}/reviewAverage?uuid=${user.userUUID}"
 
         val request = Request.Builder()
                 .url(url)
