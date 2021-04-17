@@ -10,22 +10,24 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import ebucelik.keepeasy.foodsy.R
+import ebucelik.keepeasy.foodsy.databinding.RowHomeBinding
 import ebucelik.keepeasy.foodsy.entitiy.OfferList
 import java.text.SimpleDateFormat
 
-
-class OfferListAdapter(context: Context, offerList: OfferList) : BaseAdapter(){
+class OfferListAdapter(context: Context, _offerList: OfferList) : BaseAdapter(){
 
     private val homeContext: Context = context
-    private val offer: OfferList = offerList
+    private val offerList: OfferList = _offerList
+    private lateinit var binding: RowHomeBinding
 
     override fun getCount(): Int {
-        return offer.offeringList.size
+        return offerList.offeringList.size
     }
 
     override fun getItem(position: Int): Any {
-        return offer.offeringList[position]
+        return offerList.offeringList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -34,38 +36,27 @@ class OfferListAdapter(context: Context, offerList: OfferList) : BaseAdapter(){
 
     override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
         val layoutInflater = LayoutInflater.from(homeContext)
-        val rowHome = layoutInflater.inflate(R.layout.row_home, viewGroup, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.row_home, viewGroup, false)
 
-        val mealName = rowHome.findViewById<TextView>(R.id.mealName)
-        mealName.text = offer.offeringList[position].mealName
-
-        val mealArea = rowHome.findViewById<TextView>(R.id.mealArea)
-        mealArea.text = offer.offeringList[position].area
-
-        val mealOfferDate = rowHome.findViewById<TextView>(R.id.offeredDate)
+        binding.offer = offerList.offeringList[position]
+        val offer = offerList.offeringList[position]
 
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
-        mealOfferDate.text = simpleDateFormat.format(offer.offeringList[position].currentTimestamp)
+        binding.offeredDate.text = simpleDateFormat.format(offer.currentTimestamp)
 
-        val mealImage = rowHome.findViewById<ImageView>(R.id.mealImage)
         try {
-            if(offer.offeringList[position].encodedImage != null){
-                mealImage.setImageBitmap(decodeImage(offer.offeringList[position].encodedImage))
+            if(!offer.encodedImage.isNullOrEmpty()){
+                binding.mealImage.setImageBitmap(decodeImage(offer.encodedImage))
+            }
+
+            if(!offer.user.profileImage.isNullOrEmpty()){
+                binding.profileImage.setImageBitmap(decodeImage(offer.user.profileImage))
             }
         }catch (e: Exception){
             e.printStackTrace()
         }
 
-        val mealProfileImage = rowHome.findViewById<ImageView>(R.id.profileImage)
-        try {
-            if(offer.offeringList[position].user.getProfileImage() != null){
-                mealProfileImage.setImageBitmap(decodeImage(offer.offeringList[position].user.getProfileImage()))
-            }
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-
-        return rowHome
+        return binding.root
     }
 
     private fun decodeImage(encodedImage: String):Bitmap{

@@ -145,7 +145,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
         Normally our backend runs at localhost:8080 but the simulator uses also this port on the localhost for that reason
         we must use this IP address 10.0.2.2
         */
-        val url = "http://${MainActivity.IP}:8080/user"
+        val url = "${MainActivity.IP}/user"
 
         val jsonObject = JSONObject()
 
@@ -203,7 +203,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
         val sharedPref = activity?.getSharedPreferences("uuid", Context.MODE_PRIVATE)
         sharedPref
                 ?.edit()
-                ?.putString(R.string.uuid.toString(), user.getUUID())
+                ?.putString(R.string.uuid.toString(), user.userUUID)
                 ?.apply()
     }
 }

@@ -7,15 +7,21 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.UserGlobal.user
 import ebucelik.keepeasy.foodsy.entitiy.User
 import ebucelik.keepeasy.foodsy.home.HomeActivity
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
 import okhttp3.*
 import java.io.IOException
 
+object UserGlobal{
+    lateinit var user: User
+}
+
 class MainActivity : AppCompatActivity() {
     companion object{
-        const val IP = "10.0.2.2"
+        const val IP = "http://10.0.2.2:8080"
+        //const val IP = "https://myfood-backend.herokuapp.com"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +50,8 @@ class MainActivity : AppCompatActivity() {
         return sharedPref.getString(R.string.uuid.toString(), "") as String
     }
 
-    fun getUser(uuid: String){
-        val url = "http://${IP}:8080/user?userUUID=${uuid}"
+    private fun getUser(uuid: String){
+        val url = "${IP}/user?userUUID=${uuid}"
 
         val request = Request.Builder()
                 .url(url)
@@ -56,9 +62,14 @@ class MainActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response){
 
+                val body = response.body?.string()
+                val gson = GsonBuilder().create()
+
                 Handler(Looper.getMainLooper()).post {
                     when(response.code){
                         200 -> {
+                            user = gson.fromJson(body, User::class.java)
+
                             showHomeScreen()
                         }
                         else -> {

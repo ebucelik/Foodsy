@@ -3,15 +3,25 @@ package ebucelik.keepeasy.foodsy.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
+import ebucelik.keepeasy.foodsy.UserGlobal.user
 import ebucelik.keepeasy.foodsy.account.ReviewActivity
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.Order
+import ebucelik.keepeasy.foodsy.entitiy.User
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
+import okhttp3.*
+import java.io.IOException
 import java.lang.Exception
 import java.util.*
 
@@ -36,6 +46,8 @@ class HomeActivity : AppCompatActivity() {
 
         uuid = readUUID()
 
+        initializeUser()
+
         homeFragment = HomeFragment(this)
         searchFragment = SearchFragment(this)
         sellFragment = SellFragment(uuid)
@@ -58,6 +70,41 @@ class HomeActivity : AppCompatActivity() {
         })
 
         changeFragment(homeFragment)
+    }
+
+    private fun initializeUser(){
+        if(user == null){
+            val url = "${MainActivity.IP}/user?userUUID=${uuid}"
+
+            val request = Request.Builder()
+                    .url(url)
+                    .get()
+                    .build()
+
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object: Callback{
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    val gson = GsonBuilder().create()
+
+                    Handler(Looper.getMainLooper()).post {
+                        when(response.code){
+                            200 -> {
+                                user = gson.fromJson(body, User::class.java)
+                            }
+                            else -> {
+                                Toast.makeText(baseContext, "Server error", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
+                }
+
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.i("HomeActivity", e.toString())
+                }
+            })
+        }
     }
 
     private fun changeFragment(fragment: Fragment){

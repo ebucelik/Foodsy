@@ -11,11 +11,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.account.UserActivity
+import ebucelik.keepeasy.foodsy.databinding.ActivityMealDetailBinding
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.User
 import okhttp3.*
@@ -28,8 +30,9 @@ import java.text.SimpleDateFormat
 
 class OfferDetailActivity : AppCompatActivity() {
 
-    private lateinit var offeredUserUuid: String
     private lateinit var orderingUserUuid: String
+    private lateinit var offer: Offer
+    private lateinit var binding: ActivityMealDetailBinding
 
     companion object{
         const val USER = "user"
@@ -37,50 +40,36 @@ class OfferDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_meal_detail)
 
-        val username = findViewById<TextView>(R.id.username)
-        val mealName = findViewById<TextView>(R.id.mealName)
-        val mealImage = findViewById<ImageView>(R.id.mealImage)
-        val mealCategory = findViewById<TextView>(R.id.mealCategory)
-        val mealArea = findViewById<TextView>(R.id.mealArea)
-        val mealIngredients = findViewById<TextView>(R.id.mealIngredients)
-        val orderMeal = findViewById<Button>(R.id.orderBtn)
-        val offeredDate = findViewById<TextView>(R.id.offeredDate)
-        val profileImage = findViewById<ImageView>(R.id.profileImage)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_meal_detail)
 
         orderingUserUuid = intent.getStringExtra(HomeActivity.ORDERINGUUID).toString()
-        val offer = intent.getSerializableExtra(HomeActivity.OFFER) as Offer
-        val offeringId = offer.id
-        offeredUserUuid = offer.user.getUUID()
-        mealName.text = offer.mealName
-        mealCategory.text = offer.category
-        mealArea.text = offer.area
-        mealIngredients.text = offer.ingredients
+        offer = intent.getSerializableExtra(HomeActivity.OFFER) as Offer
+
+        binding.meal = offer
 
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
-        offeredDate.text = simpleDateFormat.format(offer.currentTimestamp)
-        username.text = offer.user.getUsername()
+        binding.offeredDate.text = simpleDateFormat.format(offer.currentTimestamp)
 
         if(offer.encodedImage != ""){
-            mealImage.setImageBitmap(decodeImage(offer.encodedImage))
+            binding.mealImage.setImageBitmap(decodeImage(offer.encodedImage))
         }
 
-        if(offer.user.getProfileImage() != ""){
-            profileImage.setImageBitmap(decodeImage(offer.user.getProfileImage()))
+        if(offer.user.profileImage != ""){
+            binding.profileImage.setImageBitmap(decodeImage(offer.user.profileImage))
         }
 
-        orderMeal.setOnClickListener {
-            orderMeal(offeringId)
+        binding.orderBtn.setOnClickListener {
+            orderMeal(offer.id)
         }
 
-        profileImage.setOnClickListener {
+        binding.profileImage.setOnClickListener {
             openUserProfile(offer.user)
         }
     }
 
     private fun orderMeal(offeringId:Long){
-        val url = "http://${MainActivity.IP}:8080/ordering"
+        val url = "${MainActivity.IP}/ordering"
 
         val jsonObject = JSONObject()
         try{

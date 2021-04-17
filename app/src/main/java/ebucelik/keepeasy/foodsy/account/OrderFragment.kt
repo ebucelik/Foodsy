@@ -42,7 +42,7 @@ class OrderFragment(private val uuid:String, private val homeActivity: HomeActiv
     }
 
     private fun getOrderedMeals(){
-        val url = "http://${MainActivity.IP}:8080/ordering?uuid=$uuid"
+        val url = "${MainActivity.IP}/ordering?uuid=$uuid"
 
         val request = Request.Builder()
                 .url(url)

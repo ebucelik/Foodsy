@@ -57,8 +57,8 @@ class OrderListAdapter(context: Context, orderList: OrderList) : BaseAdapter(){
 
         val mealProfileImage = rowAccOrder.findViewById<ImageView>(R.id.profileImage)
         try {
-            if(order.orderingList[position].offer.user.getProfileImage() != null){
-                mealProfileImage.setImageBitmap(decodeImage(order.orderingList[position].offer.user.getProfileImage()))
+            if(order.orderingList[position].offer.user.profileImage != null){
+                mealProfileImage.setImageBitmap(decodeImage(order.orderingList[position].offer.user.profileImage))
             }
         }catch (e: Exception){
             e.printStackTrace()

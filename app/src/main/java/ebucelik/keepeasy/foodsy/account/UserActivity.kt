@@ -38,7 +38,7 @@ class UserActivity : AppCompatActivity() {
         lastnameView = findViewById(R.id.lastname)
         usernameView = findViewById(R.id.username)
         profileImage = findViewById(R.id.profileImage)
-        offerFragment = OfferFragment(user.getUUID())
+        offerFragment = OfferFragment(user.userUUID)
 
         rates = arrayListOf(
                 findViewById(R.id.rate1),
@@ -48,12 +48,12 @@ class UserActivity : AppCompatActivity() {
                 findViewById(R.id.rate5)
         )
 
-        firstnameView.text = user.getFirstname()
-        lastnameView.text = user.getSurname()
-        usernameView.text = user.getUsername()
+        firstnameView.text = user.firstname
+        lastnameView.text = user.surname
+        usernameView.text = user.username
 
-        if (user.getProfileImage() != null){
-            profileImage.setImageBitmap(decodeImage(user.getProfileImage()))
+        if (user.profileImage != null){
+            profileImage.setImageBitmap(decodeImage(user.profileImage))
         }
 
         getStarReview()
@@ -69,7 +69,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun getStarReview(){
-        val url = "http://${MainActivity.IP}:8080/reviewAverage?uuid=${user.getUUID()}"
+        val url = "${MainActivity.IP}/reviewAverage?uuid=${user.userUUID}"
 
         val request = Request.Builder()
                 .url(url)

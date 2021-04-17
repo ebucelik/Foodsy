@@ -27,4 +27,6 @@
     <string name="mealCategory">Please enter your Meal Category.</string>
     <string name="mealArea">Please enter your Meal Area.</string>
     <string name="title_activity_user">UserActivity</string>
+    <string name="order_meal">Order Meal</string>
+    <string name="logout">Logout</string>
 </resources>

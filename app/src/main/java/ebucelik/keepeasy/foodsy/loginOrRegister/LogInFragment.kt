@@ -72,7 +72,7 @@ class LogInFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_
     }
 
     private fun login(){
-        val url = "http://${MainActivity.IP}:8080/login"
+        val url = "${MainActivity.IP}/login"
 
         val jsonObject = JSONObject()
 

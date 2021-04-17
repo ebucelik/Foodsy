@@ -58,7 +58,7 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
     }
 
     private fun fetchJson(meal: String){
-        val url = "http://${MainActivity.IP}:8080/offer?mealName=$meal"
+        val url = "${MainActivity.IP}/offer?mealName=$meal"
 
         val request = Request.Builder()
                 .url(url)
