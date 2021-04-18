@@ -3,46 +3,42 @@ package ebucelik.keepeasy.foodsy.home
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
+import ebucelik.keepeasy.foodsy.Constants.user
+import ebucelik.keepeasy.foodsy.Constants.uuid
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentSellBinding
+import ebucelik.keepeasy.foodsy.entitiy.Offer
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.IOException
-import java.io.InputStream
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
-class SellFragment(private val uuid:String) : Fragment(R.layout.fragment_sell) {
+class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragment_sell) {
 
     private val REQUEST_SELECT_IMAGE_IN_ALBUM = 1
     private lateinit var binding: FragmentSellBinding
+    private var imageURI: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSellBinding.bind(view)
+
+        setEditTextValues()
 
         binding.mealImage.setOnClickListener {
             selectImageFromGallery()
@@ -53,6 +49,45 @@ class SellFragment(private val uuid:String) : Fragment(R.layout.fragment_sell) {
                 createOffer()
             }
         }
+
+        setOnFocusChangeListener()
+    }
+
+    private fun setEditTextValues(){
+        if(!offer?.encodedImage.isNullOrEmpty())
+            binding.mealImage.setImageURI(Uri.parse(offer?.encodedImage))
+
+        binding.offer = offer
+    }
+
+    private fun setOnFocusChangeListener(){
+        binding.mealName.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                setOffer()
+            }
+        }
+
+        binding.mealCategory.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                setOffer()
+            }
+        }
+
+        binding.mealArea.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                setOffer()
+            }
+        }
+
+        binding.mealIngredients.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                setOffer()
+            }
+        }
+    }
+
+    private fun setOffer(){
+        (activity as HomeActivity).homeActivityViewModel.setOffer(Offer(1, binding.mealName.text.toString(), binding.mealCategory.text.toString(), binding.mealArea.text.toString(), imageURI, binding.mealIngredients.text.toString(), Date(), user))
     }
 
     private fun checkMealName():Boolean{
@@ -105,6 +140,7 @@ class SellFragment(private val uuid:String) : Fragment(R.layout.fragment_sell) {
 
         if(resultCode == RESULT_OK && requestCode == REQUEST_SELECT_IMAGE_IN_ALBUM){
             val imageURI = data?.data
+            this.imageURI = imageURI.toString()
             binding.mealImage.setImageURI(imageURI)
             encodeImage()
         }
@@ -150,6 +186,7 @@ class SellFragment(private val uuid:String) : Fragment(R.layout.fragment_sell) {
                 if(response.code == 201){
                     activity?.runOnUiThread{
                         Toast.makeText(activity, "Your meal offer is successfully created.", Toast.LENGTH_SHORT).show()
+                        imageURI = ""
                         binding.mealName.setText("")
                         binding.mealCategory.setText("")
                         binding.mealArea.setText("")

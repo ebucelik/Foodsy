@@ -18,11 +18,10 @@ import java.lang.Exception
 import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 
-class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search) {
+class SearchFragment() : Fragment(R.layout.fragment_search) {
 
     private lateinit var offerList: OfferList
     private lateinit var binding: FragmentSearchBinding
-    private val homeActivity: HomeActivity = home
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +49,7 @@ class SearchFragment(val home: HomeActivity) : Fragment(R.layout.fragment_search
         binding.searchedMealsList.setOnItemClickListener { parent, view, position, id ->
             val offer = parent.getItemAtPosition(position) as Offer
             try {
-                homeActivity.openOfferDetailActivity(offer)
+                (activity as HomeActivity).openOfferDetailActivity(offer)
             }catch (e: ArrayIndexOutOfBoundsException){
                 e.printStackTrace()
             }

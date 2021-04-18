@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import ebucelik.keepeasy.foodsy.Constants
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentLogInBinding
@@ -19,11 +20,9 @@ import java.io.IOException
 /**
  * A simple [Fragment] subclass.
  */
-class LogInFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_log_in) {
+class LogInFragment() : Fragment(R.layout.fragment_log_in) {
 
     private lateinit var binding: FragmentLogInBinding
-
-    private var logInActivity: LogInActivity = _logInActivity
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,8 +36,32 @@ class LogInFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_
         }
 
         binding.notRegistered.setOnClickListener {
-            logInActivity.changeFragment(logInActivity.registrationFragment)
+            (activity as LogInActivity).changeFragment((activity as LogInActivity).registrationFragment)
         }
+
+        setOnFocusChangeListener()
+    }
+
+    private fun setOnFocusChangeListener(){
+        binding.username.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                (activity as LogInActivity).loginActivityViewModel.setUsername(binding.username.text.toString())
+            }
+        }
+
+        binding.password.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                (activity as LogInActivity).loginActivityViewModel.setPassword(binding.password.text.toString())
+            }
+        }
+    }
+
+    fun setUsername(username: String){
+        binding.username.setText(username)
+    }
+
+    fun setPassword(password: String){
+        binding.password.setText(password)
     }
 
     private fun checkPassword():Boolean {
@@ -94,13 +117,14 @@ class LogInFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response){
-                val body = response?.body?.string()
+                val body = response.body?.string()
 
                 activity?.runOnUiThread {
                     when (response.code) {
                         202 -> {
+                            Constants.uuid = body.toString()
                             saveUUID(body.toString())
-                            logInActivity.openHomeActivity()
+                            (activity as LogInActivity).openHomeActivity()
                         }
                         401 -> {
                             Toast.makeText(activity, "The Username or password is wrong.", Toast.LENGTH_SHORT).show()

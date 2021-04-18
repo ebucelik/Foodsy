@@ -7,16 +7,12 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
-import ebucelik.keepeasy.foodsy.UserGlobal.user
+import ebucelik.keepeasy.foodsy.Constants.user
 import ebucelik.keepeasy.foodsy.entitiy.User
 import ebucelik.keepeasy.foodsy.home.HomeActivity
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
 import okhttp3.*
 import java.io.IOException
-
-object UserGlobal{
-    lateinit var user: User
-}
 
 class MainActivity : AppCompatActivity() {
     companion object{
@@ -69,6 +65,7 @@ class MainActivity : AppCompatActivity() {
                     when(response.code){
                         200 -> {
                             user = gson.fromJson(body, User::class.java)
+                            Constants.uuid = user.userUUID
 
                             showHomeScreen()
                         }

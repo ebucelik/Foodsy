@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.Constants.uuid
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.adapter.OfferListAdapter
@@ -18,7 +19,7 @@ import ebucelik.keepeasy.foodsy.home.HomeActivity
 import okhttp3.*
 import java.io.IOException
 
-class OrderFragment(private val uuid:String, private val homeActivity: HomeActivity) : Fragment(R.layout.fragment_order) {
+class OrderFragment() : Fragment(R.layout.fragment_order) {
 
     private lateinit var binding: FragmentOrderBinding
     private lateinit var orderList: OrderList
@@ -34,7 +35,7 @@ class OrderFragment(private val uuid:String, private val homeActivity: HomeActiv
             val order = parent.getItemAtPosition(position) as Order
 
             try {
-                homeActivity.openReviewActivity(order)
+                (activity as HomeActivity).openReviewActivity(order)
             }catch (e: ArrayIndexOutOfBoundsException){
                 e.printStackTrace()
             }

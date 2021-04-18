@@ -10,7 +10,7 @@
 
     <!-- TODO: Update blank fragment layout -->
     <ListView
-        android:id="@+id/offerListView"
+        android:id="@+id/offerList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

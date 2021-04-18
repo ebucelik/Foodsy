@@ -15,11 +15,10 @@ import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 
-class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
+class HomeFragment() : Fragment(R.layout.fragment_home){
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var offerList: OfferList
-    private val homeActivity: HomeActivity = home
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,7 +30,7 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
         binding.homeListView.setOnItemClickListener { parent, view, position, id ->
             val offer = parent.getItemAtPosition(position) as Offer
             try {
-                homeActivity.openOfferDetailActivity(offer)
+                (activity as HomeActivity).openOfferDetailActivity(offer)
             }catch (e: ArrayIndexOutOfBoundsException){
                 e.printStackTrace()
             }
@@ -39,7 +38,7 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
 
         binding.logout.setOnClickListener {
             setUUIDtoEmpty()
-            homeActivity.openLoginActivity()
+            (activity as HomeActivity).openLoginActivity()
         }
     }
 

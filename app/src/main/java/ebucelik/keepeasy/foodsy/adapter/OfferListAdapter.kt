@@ -49,8 +49,8 @@ class OfferListAdapter(context: Context, _offerList: OfferList) : BaseAdapter(){
                 binding.mealImage.setImageBitmap(decodeImage(offer.encodedImage))
             }
 
-            if(!offer.user.profileImage.isNullOrEmpty()){
-                binding.profileImage.setImageBitmap(decodeImage(offer.user.profileImage))
+            if(!offer.user?.profileImage.isNullOrEmpty()){
+                binding.profileImage.setImageBitmap(offer.user?.let { decodeImage(it.profileImage) })
             }
         }catch (e: Exception){
             e.printStackTrace()

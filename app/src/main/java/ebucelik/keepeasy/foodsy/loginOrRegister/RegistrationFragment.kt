@@ -12,7 +12,10 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.Observer
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.Constants
+import ebucelik.keepeasy.foodsy.Constants.user
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentRegistrationBinding
@@ -28,11 +31,9 @@ import java.io.IOException
 /**
  * A simple [Fragment] subclass.
  */
-class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_registration) {
+class RegistrationFragment() : Fragment(R.layout.fragment_registration) {
 
     private lateinit var binding: FragmentRegistrationBinding
-    private var logInActivity: LogInActivity = _logInActivity
-    private lateinit var user: User
     private var imageURI: Uri? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +42,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
         binding = FragmentRegistrationBinding.bind(view)
 
         binding.registered.setOnClickListener {
-            logInActivity.changeFragment(logInActivity.loginFragment)
+            (activity as LogInActivity).changeFragment((activity as LogInActivity).loginFragment)
         }
 
         binding.profileImage.setOnClickListener {
@@ -53,6 +54,78 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
                 createUser()
             }
         }
+
+        setViewContent()
+        setOnFocusChangeListener()
+    }
+
+    private fun setViewContent(){
+        (activity as LogInActivity).loginActivityViewModel.profileImageRegistration.observe(viewLifecycleOwner, Observer { profileImage ->
+            setProfileImage(profileImage)
+        })
+
+        (activity as LogInActivity).loginActivityViewModel.usernameRegistration.observe(viewLifecycleOwner, Observer { username ->
+            setUsername(username)
+        })
+
+        (activity as LogInActivity).loginActivityViewModel.passwordRegistration.observe(viewLifecycleOwner, Observer { password ->
+            setPassword(password)
+        })
+
+        (activity as LogInActivity).loginActivityViewModel.firstnameRegistration.observe(viewLifecycleOwner, Observer { firstname ->
+            setFirstname(firstname)
+        })
+
+        (activity as LogInActivity).loginActivityViewModel.lastnameRegistration.observe(viewLifecycleOwner, Observer { lastname ->
+            setLastname(lastname)
+        })
+    }
+
+    private fun setOnFocusChangeListener(){
+        binding.firstname.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                (activity as LogInActivity).loginActivityViewModel.setFirstnameRegistration(binding.firstname.text.toString())
+            }
+        }
+
+        binding.lastname.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                (activity as LogInActivity).loginActivityViewModel.setLastnameRegistration(binding.lastname.text.toString())
+            }
+        }
+
+        binding.username.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                (activity as LogInActivity).loginActivityViewModel.setUsernameRegistration(binding.username.text.toString())
+            }
+        }
+
+        binding.password.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                (activity as LogInActivity).loginActivityViewModel.setPasswordRegistration(binding.password.text.toString())
+            }
+        }
+    }
+
+    private fun setProfileImage(uri: Uri){
+        binding.profileImage.setImageURI(uri)
+        imageURI = uri
+    }
+
+    private fun setUsername(username: String){
+        binding.username.setText(username)
+    }
+
+    private fun setPassword(password: String){
+        binding.password.setText(password)
+    }
+
+    private fun setFirstname(firstname: String){
+        binding.firstname.setText(firstname)
+    }
+
+    private fun setLastname(lastname: String){
+        binding.lastname.setText(lastname)
     }
 
     private fun selectImageFromGallery(){
@@ -66,6 +139,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
 
         if(resultCode == Activity.RESULT_OK && requestCode == 1){
             imageURI = data?.data
+            imageURI?.let { (activity as LogInActivity).loginActivityViewModel.setProfileImage(it) }
             binding.profileImage.setImageURI(imageURI)
             encodeImage()
         }
@@ -178,8 +252,9 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
                 activity?.runOnUiThread {
                     when (response.code) {
                         201 -> {
+                            Constants.uuid = user.userUUID
                             saveUUID()
-                            logInActivity.openHomeActivity()
+                            (activity as LogInActivity).openHomeActivity()
                         }
                         409 -> {
                             Toast.makeText(activity, "This Username already exists.", Toast.LENGTH_SHORT).show()

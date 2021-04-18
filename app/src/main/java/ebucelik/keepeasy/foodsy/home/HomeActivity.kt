@@ -9,17 +9,21 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.gson.GsonBuilder
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
-import ebucelik.keepeasy.foodsy.UserGlobal.user
+import ebucelik.keepeasy.foodsy.Constants.user
+import ebucelik.keepeasy.foodsy.Constants.uuid
 import ebucelik.keepeasy.foodsy.account.ReviewActivity
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.Order
 import ebucelik.keepeasy.foodsy.entitiy.User
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
+import ebucelik.keepeasy.foodsy.viewmodels.HomeActivityViewModel
 import okhttp3.*
 import java.io.IOException
 import java.lang.Exception
@@ -32,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
     lateinit var sellFragment: SellFragment
     lateinit var accountFragment: AccountFragment
     lateinit var tabLayout: TabLayout
-    lateinit var uuid: String
+    lateinit var homeActivityViewModel: HomeActivityViewModel
 
     companion object{
         const val ORDERINGUUID = "orderinguuid"
@@ -44,14 +48,18 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        uuid = readUUID()
-
         initializeUser()
 
-        homeFragment = HomeFragment(this)
-        searchFragment = SearchFragment(this)
-        sellFragment = SellFragment(uuid)
-        accountFragment = AccountFragment(this, uuid)
+        homeActivityViewModel = ViewModelProvider(this).get(HomeActivityViewModel::class.java)
+
+        homeActivityViewModel.currentOffer.observe(this, Observer{ newOffer ->
+            sellFragment = SellFragment(newOffer)
+        })
+
+        homeFragment = HomeFragment()
+        searchFragment = SearchFragment()
+        sellFragment = SellFragment()
+        accountFragment = AccountFragment()
 
         tabLayout = findViewById(R.id.tabLayout)
 

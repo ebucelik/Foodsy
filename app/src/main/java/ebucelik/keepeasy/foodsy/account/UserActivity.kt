@@ -38,7 +38,7 @@ class UserActivity : AppCompatActivity() {
         lastnameView = findViewById(R.id.lastname)
         usernameView = findViewById(R.id.username)
         profileImage = findViewById(R.id.profileImage)
-        offerFragment = OfferFragment(user.userUUID)
+        offerFragment = OfferFragment()
 
         rates = arrayListOf(
                 findViewById(R.id.rate1),

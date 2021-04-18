@@ -52,7 +52,7 @@ class ReviewActivity : AppCompatActivity() {
         val profileImage = findViewById<ImageView>(R.id.profileImage)
 
         order = intent.getSerializableExtra(HomeActivity.ORDER) as Order
-        offeredUserUuid = order.offer.user.userUUID
+        offeredUserUuid = order.offer.user?.userUUID ?: ""
         mealName.text = order.offer.mealName
         mealCategory.text = order.offer.category
         mealArea.text = order.offer.area
@@ -60,14 +60,14 @@ class ReviewActivity : AppCompatActivity() {
 
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
         offeredDate.text = simpleDateFormat.format(order.offer.currentTimestamp)
-        username.text = order.offer.user.username
+        username.text = order.offer.user?.username
 
         if(order.offer.encodedImage != ""){
             mealImage.setImageBitmap(decodeImage(order.offer.encodedImage))
         }
 
-        if(order.offer.user.profileImage != ""){
-            profileImage.setImageBitmap(decodeImage(order.offer.user.profileImage))
+        if(order.offer.user?.profileImage != ""){
+            profileImage.setImageBitmap(order.offer.user?.let { decodeImage(it.profileImage) })
         }
 
         reviewMeal.setOnClickListener {

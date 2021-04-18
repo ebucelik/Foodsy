@@ -55,8 +55,8 @@ class OfferDetailActivity : AppCompatActivity() {
             binding.mealImage.setImageBitmap(decodeImage(offer.encodedImage))
         }
 
-        if(offer.user.profileImage != ""){
-            binding.profileImage.setImageBitmap(decodeImage(offer.user.profileImage))
+        if(offer.user?.profileImage != ""){
+            binding.profileImage.setImageBitmap(offer.user?.let { decodeImage(it.profileImage) })
         }
 
         binding.orderBtn.setOnClickListener {
@@ -64,7 +64,7 @@ class OfferDetailActivity : AppCompatActivity() {
         }
 
         binding.profileImage.setOnClickListener {
-            openUserProfile(offer.user)
+            offer.user?.let { it1 -> openUserProfile(it1) }
         }
     }
 
