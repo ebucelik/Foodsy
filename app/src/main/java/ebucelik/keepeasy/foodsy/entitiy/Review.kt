@@ -1,4 +1,6 @@
 package ebucelik.keepeasy.foodsy.entitiy
 
-class Review(val id:Long, val reviewPoints:Int, val reviewText:String, val ordering:Order) {
+import java.io.Serializable
+
+class Review(val id:Long, val reviewPoints:Int, val reviewText:String, val ordering:Order):Serializable {
 }

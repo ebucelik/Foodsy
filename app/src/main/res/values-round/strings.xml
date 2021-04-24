@@ -15,4 +15,6 @@
     <string name="meal_area_e_g_italy">Meal Area (e.g. Italy)</string>
     <string name="meal_ingredients_e_g_penne">Meal Ingredients (e.g. Penne)</string>
     <string name="offer_meal">OFFER MEAL</string>
+    <string name="star_rating">star_rating</string>
+    <string name="mealprice">Mealprice in €</string>
 </resources>

@@ -11,6 +11,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import ebucelik.keepeasy.foodsy.R
+import ebucelik.keepeasy.foodsy.entitiy.Order
 import ebucelik.keepeasy.foodsy.entitiy.OrderList
 import java.text.SimpleDateFormat
 
@@ -23,7 +24,7 @@ class OrderListAdapter(context: Context, orderList: OrderList) : BaseAdapter(){
         return order.orderingList.size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): Order {
         return order.orderingList[position]
     }
 
@@ -36,20 +37,23 @@ class OrderListAdapter(context: Context, orderList: OrderList) : BaseAdapter(){
         val rowAccOrder = layoutInflater.inflate(R.layout.row_home, viewGroup, false)
 
         val mealName = rowAccOrder.findViewById<TextView>(R.id.mealName)
-        mealName.text = order.orderingList[position].offer.mealName
+        mealName.text = getItem(position).offer.mealName
 
         val mealArea = rowAccOrder.findViewById<TextView>(R.id.mealArea)
-        mealArea.text = order.orderingList[position].offer.area
+        mealArea.text = getItem(position).offer.area
 
         val mealOfferDate = rowAccOrder.findViewById<TextView>(R.id.offeredDate)
 
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
-        mealOfferDate.text = simpleDateFormat.format(order.orderingList[position].offer.currentTimestamp)
+        mealOfferDate.text = simpleDateFormat.format(getItem(position).offer.currentTimestamp)
+
+        val mealPrice = rowAccOrder.findViewById<TextView>(R.id.price)
+        mealPrice.text = "${getItem(position).offer.price}€"
 
         val mealImage = rowAccOrder.findViewById<ImageView>(R.id.mealImage)
         try {
-            if(order.orderingList[position].offer.encodedImage != null){
-                mealImage.setImageBitmap(decodeImage(order.orderingList[position].offer.encodedImage))
+            if(getItem(position).offer.encodedImage != null){
+                mealImage.setImageBitmap(decodeImage(getItem(position).offer.encodedImage))
             }
         }catch (e: Exception){
             e.printStackTrace()
@@ -57,8 +61,8 @@ class OrderListAdapter(context: Context, orderList: OrderList) : BaseAdapter(){
 
         val mealProfileImage = rowAccOrder.findViewById<ImageView>(R.id.profileImage)
         try {
-            if(order.orderingList[position].offer.user?.profileImage != null){
-                mealProfileImage.setImageBitmap(order.orderingList[position].offer.user?.let { decodeImage(it.profileImage) })
+            if(getItem(position).offer.user?.profileImage != null){
+                mealProfileImage.setImageBitmap(getItem(position).offer.user?.let { decodeImage(it.profileImage) })
             }
         }catch (e: Exception){
             e.printStackTrace()

@@ -16,13 +16,14 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.gson.GsonBuilder
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
-import ebucelik.keepeasy.foodsy.Constants.user
-import ebucelik.keepeasy.foodsy.Constants.uuid
+import ebucelik.keepeasy.foodsy.Globals.user
+import ebucelik.keepeasy.foodsy.Globals.uuid
 import ebucelik.keepeasy.foodsy.account.ReviewActivity
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.Order
 import ebucelik.keepeasy.foodsy.entitiy.User
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
+import ebucelik.keepeasy.foodsy.repositories.AccountRepository
 import ebucelik.keepeasy.foodsy.viewmodels.HomeActivityViewModel
 import okhttp3.*
 import java.io.IOException
@@ -36,12 +37,13 @@ class HomeActivity : AppCompatActivity() {
     lateinit var sellFragment: SellFragment
     lateinit var accountFragment: AccountFragment
     lateinit var tabLayout: TabLayout
-    lateinit var homeActivityViewModel: HomeActivityViewModel
+    //lateinit var homeActivityViewModel: HomeActivityViewModel
 
     companion object{
         const val ORDERINGUUID = "orderinguuid"
         const val OFFER = "offer"
         const val ORDER = "order"
+        lateinit var homeActivityViewModel: HomeActivityViewModel
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +57,12 @@ class HomeActivity : AppCompatActivity() {
         homeActivityViewModel.currentOffer.observe(this, Observer{ newOffer ->
             sellFragment = SellFragment(newOffer)
         })
+
+        homeActivityViewModel.reviewQuantity.observe(this, Observer { reviewQuantity ->
+            accountFragment = AccountFragment(reviewQuantity)
+        })
+
+        AccountRepository.getReviewQuantity(uuid)
 
         homeFragment = HomeFragment()
         searchFragment = SearchFragment()
@@ -81,7 +89,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun initializeUser(){
-        if(user == null){
+        if(user.userUUID.isEmpty()){
             val url = "${MainActivity.IP}/user?userUUID=${uuid}"
 
             val request = Request.Builder()

@@ -44,6 +44,8 @@ class OfferListAdapter(context: Context, _offerList: OfferList) : BaseAdapter(){
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
         binding.offeredDate.text = simpleDateFormat.format(offer.currentTimestamp)
 
+        binding.price.text = offer.price.toString() + "€"
+
         try {
             if(!offer.encodedImage.isNullOrEmpty()){
                 binding.mealImage.setImageBitmap(decodeImage(offer.encodedImage))

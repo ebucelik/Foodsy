@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
-import ebucelik.keepeasy.foodsy.Constants
+import ebucelik.keepeasy.foodsy.Globals
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentLogInBinding
@@ -122,7 +122,7 @@ class LogInFragment() : Fragment(R.layout.fragment_log_in) {
                 activity?.runOnUiThread {
                     when (response.code) {
                         202 -> {
-                            Constants.uuid = body.toString()
+                            Globals.uuid = body.toString()
                             saveUUID(body.toString())
                             (activity as LogInActivity).openHomeActivity()
                         }

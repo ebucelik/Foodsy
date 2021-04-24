@@ -9,4 +9,5 @@
     <color name="red">#ff3b29</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primaryColor">#67cf83</color>
+    <color name="ratingBarColor">#FFD700</color>
 </resources>

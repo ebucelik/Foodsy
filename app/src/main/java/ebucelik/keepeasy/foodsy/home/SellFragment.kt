@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
-import ebucelik.keepeasy.foodsy.Constants.user
-import ebucelik.keepeasy.foodsy.Constants.uuid
+import ebucelik.keepeasy.foodsy.Globals.user
+import ebucelik.keepeasy.foodsy.Globals.uuid
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentSellBinding
@@ -45,7 +45,7 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
         }
 
         binding.offerMealBtn.setOnClickListener {
-            if(checkMealName() && checkMealCategory() && checkMealArea()){
+            if(checkMealName() && checkMealCategory() && checkMealArea() && checkMealPrice()){
                 createOffer()
             }
         }
@@ -58,6 +58,10 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
             binding.mealImage.setImageURI(Uri.parse(offer?.encodedImage))
 
         binding.offer = offer
+
+        if(offer != null){
+            binding.mealPrice.setText(offer.price.toString())
+        }
     }
 
     private fun setOnFocusChangeListener(){
@@ -84,10 +88,16 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
                 setOffer()
             }
         }
+
+        binding.mealPrice.setOnFocusChangeListener { view, focus ->
+            if(!focus){
+                setOffer()
+            }
+        }
     }
 
     private fun setOffer(){
-        (activity as HomeActivity).homeActivityViewModel.setOffer(Offer(1, binding.mealName.text.toString(), binding.mealCategory.text.toString(), binding.mealArea.text.toString(), imageURI, binding.mealIngredients.text.toString(), Date(), user))
+        HomeActivity.homeActivityViewModel.setOffer(Offer(1, binding.mealName.text.toString(), binding.mealCategory.text.toString(), binding.mealArea.text.toString(), imageURI, binding.mealIngredients.text.toString(), Date(), binding.mealPrice.text.toString().toInt(), user))
     }
 
     private fun checkMealName():Boolean{
@@ -124,6 +134,19 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
                 false
             }else{
                 binding.mealAreaLayout.error = null
+                true
+            }
+        }
+    }
+
+    private fun checkMealPrice():Boolean{
+        binding.apply {
+            return if (mealPrice.text.toString().toInt() < 1 || mealPrice.text.toString().toInt() > 13){
+                mealPriceLayout.isHelperTextEnabled = true
+                mealPriceLayout.error = "Please enter a price between 1 and 13€."
+                false
+            }else{
+                mealPriceLayout.error = null
                 true
             }
         }
@@ -167,6 +190,7 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
                     .put("encodedImage", encodeImage())
                     .put("ingredients", binding.mealIngredients.text)
                     .put("timestamp", LocalDateTime.now())
+                    .put("price", binding.mealPrice.text.toString().toInt())
                     .put("userUUID", uuid)
         }catch (e: JSONException){
             e.printStackTrace()
@@ -192,6 +216,7 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
                         binding.mealArea.setText("")
                         binding.mealIngredients.setText("")
                         binding.mealImage.setImageResource(R.drawable.ic_round_add_photo_alternate_24)
+                        binding.mealPrice.setText("0")
                     }
                 }
 

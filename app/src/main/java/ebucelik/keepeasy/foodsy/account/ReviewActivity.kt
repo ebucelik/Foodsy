@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.textfield.TextInputEditText
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.entitiy.Offer
@@ -28,6 +29,7 @@ class ReviewActivity : AppCompatActivity() {
     private lateinit var offeredUserUuid: String
     private lateinit var order: Order
     private var reviewedPoints: Int = 0
+    private lateinit var reviewText: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,8 @@ class ReviewActivity : AppCompatActivity() {
         val reviewMeal = findViewById<Button>(R.id.rateBtn)
         val offeredDate = findViewById<TextView>(R.id.offeredDate)
         val profileImage = findViewById<ImageView>(R.id.profileImage)
+        val price = findViewById<TextView>(R.id.price)
+        reviewText = findViewById<TextInputEditText>(R.id.reviewText)
 
         order = intent.getSerializableExtra(HomeActivity.ORDER) as Order
         offeredUserUuid = order.offer.user?.userUUID ?: ""
@@ -57,6 +61,7 @@ class ReviewActivity : AppCompatActivity() {
         mealCategory.text = order.offer.category
         mealArea.text = order.offer.area
         mealIngredients.text = order.offer.ingredients
+        price.text = "${order.offer.price}€"
 
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
         offeredDate.text = simpleDateFormat.format(order.offer.currentTimestamp)
@@ -112,7 +117,7 @@ class ReviewActivity : AppCompatActivity() {
             jsonObject
                     .put("reviewPoints", reviewedPoints)
                     .put("orderId", order.id)
-                    .put("reviewText", "")
+                    .put("reviewText", reviewText.text.toString())
         }catch (e: JSONException){
             e.printStackTrace()
         }

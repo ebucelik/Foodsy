@@ -14,8 +14,8 @@ import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.Observer
 import com.google.gson.GsonBuilder
-import ebucelik.keepeasy.foodsy.Constants
-import ebucelik.keepeasy.foodsy.Constants.user
+import ebucelik.keepeasy.foodsy.Globals
+import ebucelik.keepeasy.foodsy.Globals.user
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentRegistrationBinding
@@ -252,7 +252,7 @@ class RegistrationFragment() : Fragment(R.layout.fragment_registration) {
                 activity?.runOnUiThread {
                     when (response.code) {
                         201 -> {
-                            Constants.uuid = user.userUUID
+                            Globals.uuid = user.userUUID
                             saveUUID()
                             (activity as LogInActivity).openHomeActivity()
                         }

@@ -5,12 +5,14 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.Globals.user
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.adapter.OfferListAdapter
 import ebucelik.keepeasy.foodsy.databinding.FragmentHomeBinding
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.OfferList
+import ebucelik.keepeasy.foodsy.entitiy.User
 import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -38,6 +40,7 @@ class HomeFragment() : Fragment(R.layout.fragment_home){
 
         binding.logout.setOnClickListener {
             setUUIDtoEmpty()
+            user = User()
             (activity as HomeActivity).openLoginActivity()
         }
     }

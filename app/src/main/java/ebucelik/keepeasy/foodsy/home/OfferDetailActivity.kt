@@ -66,6 +66,8 @@ class OfferDetailActivity : AppCompatActivity() {
         binding.profileImage.setOnClickListener {
             offer.user?.let { it1 -> openUserProfile(it1) }
         }
+
+        binding.price.text = "${offer.price} €"
     }
 
     private fun orderMeal(offeringId:Long){

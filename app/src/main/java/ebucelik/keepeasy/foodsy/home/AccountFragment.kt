@@ -1,51 +1,51 @@
 package ebucelik.keepeasy.foodsy.home
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.FragmentManager
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.GsonBuilder
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
-import ebucelik.keepeasy.foodsy.Constants.user
-import ebucelik.keepeasy.foodsy.Constants.uuid
+import ebucelik.keepeasy.foodsy.Globals.user
+import ebucelik.keepeasy.foodsy.Globals.uuid
 import ebucelik.keepeasy.foodsy.account.OfferFragment
 import ebucelik.keepeasy.foodsy.account.OrderFragment
-import ebucelik.keepeasy.foodsy.entitiy.Order
-import ebucelik.keepeasy.foodsy.entitiy.User
+import ebucelik.keepeasy.foodsy.account.ReceivedReviewFragment
+import ebucelik.keepeasy.foodsy.repositories.AccountRepository
 import okhttp3.*
 import java.io.IOException
 import java.util.ArrayList
-import kotlin.math.round
 
-class AccountFragment() : Fragment(R.layout.fragment_account) {
+class AccountFragment(private val reviewQuantity:Int = 0) : Fragment(R.layout.fragment_account) {
 
     private lateinit var offerFragment: OfferFragment
     private lateinit var orderFragment: OrderFragment
+    private lateinit var receivedReviewFragment: ReceivedReviewFragment
     private lateinit var rates: ArrayList<ImageView>
     private lateinit var firstnameView: TextView
     private lateinit var lastnameView: TextView
     private lateinit var usernameView: TextView
     private lateinit var profileImage: ImageView
+    private lateinit var ratingQuantity: TextView
+    private lateinit var accountTabLayout: TabLayout
+    private lateinit var lastSelectedTabFragment: Fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //Binding don't work. Don't know why exactly but with the included TabItems it don't work.
-        val accountTabLayout = view.findViewById<TabLayout>(R.id.accountTabLayout)
+        accountTabLayout = view.findViewById<TabLayout>(R.id.accountTabLayout)
         firstnameView = view.findViewById(R.id.firstname)
         lastnameView = view.findViewById(R.id.lastname)
         usernameView = view.findViewById(R.id.username)
         profileImage = view.findViewById(R.id.profileImage)
+        ratingQuantity = view.findViewById(R.id.ratingQuantity)
 
         initUserDetails()
 
@@ -59,6 +59,7 @@ class AccountFragment() : Fragment(R.layout.fragment_account) {
 
         offerFragment = OfferFragment()
         orderFragment = OrderFragment()
+        receivedReviewFragment = ReceivedReviewFragment()
 
         getStarReview()
 
@@ -67,18 +68,21 @@ class AccountFragment() : Fragment(R.layout.fragment_account) {
                 when(tab?.position){
                     0 -> changeFragment(offerFragment)
                     1 -> changeFragment(orderFragment)
+                    2 -> changeFragment(receivedReviewFragment)
                 }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+
+        lastSelectedTabFragment = offerFragment
     }
 
     override fun onStart() {
         super.onStart()
 
-        changeFragment(offerFragment)
+        changeFragment(lastSelectedTabFragment)
     }
 
     private fun changeFragment(fragment: Fragment){
@@ -86,6 +90,8 @@ class AccountFragment() : Fragment(R.layout.fragment_account) {
             replace(R.id.fLAccountFragment, fragment)
             commit()
         }
+
+        lastSelectedTabFragment = fragment
     }
 
     private fun getStarReview(){
@@ -127,6 +133,7 @@ class AccountFragment() : Fragment(R.layout.fragment_account) {
         lastnameView.text = user.surname
         usernameView.text = user.username
         profileImage.setImageBitmap(decodeImage(user.profileImage))
+        ratingQuantity.text = "${reviewQuantity} ratings"
     }
 
     private fun decodeImage(encodedImage: String): Bitmap {

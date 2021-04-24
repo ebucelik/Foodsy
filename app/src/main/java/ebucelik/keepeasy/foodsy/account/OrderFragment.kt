@@ -2,17 +2,13 @@ package ebucelik.keepeasy.foodsy.account
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.google.gson.GsonBuilder
-import ebucelik.keepeasy.foodsy.Constants.uuid
+import ebucelik.keepeasy.foodsy.Globals.uuid
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
-import ebucelik.keepeasy.foodsy.adapter.OfferListAdapter
 import ebucelik.keepeasy.foodsy.adapter.OrderListAdapter
 import ebucelik.keepeasy.foodsy.databinding.FragmentOrderBinding
-import ebucelik.keepeasy.foodsy.entitiy.OfferList
 import ebucelik.keepeasy.foodsy.entitiy.Order
 import ebucelik.keepeasy.foodsy.entitiy.OrderList
 import ebucelik.keepeasy.foodsy.home.HomeActivity

@@ -36,7 +36,6 @@ class LoginActivityViewModel : ViewModel() {
     val lastnameRegistration: LiveData<String>
         get() = _lastnameRegistration
 
-
     fun setProfileImage(uri: Uri){
         _profileImageRegistration.value = uri
     }
