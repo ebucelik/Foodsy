@@ -9,7 +9,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
+import ebucelik.keepeasy.foodsy.Globals.setUUIDtoEmpty
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.Globals.user
@@ -17,12 +19,17 @@ import ebucelik.keepeasy.foodsy.Globals.uuid
 import ebucelik.keepeasy.foodsy.account.OfferFragment
 import ebucelik.keepeasy.foodsy.account.OrderFragment
 import ebucelik.keepeasy.foodsy.account.ReceivedReviewFragment
+import ebucelik.keepeasy.foodsy.entitiy.User
 import ebucelik.keepeasy.foodsy.repositories.AccountRepository
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
 import java.util.ArrayList
 
-class AccountFragment(private val reviewQuantity:Int = 0) : Fragment(R.layout.fragment_account) {
+class AccountFragment() : Fragment(R.layout.fragment_account) {
 
     private lateinit var offerFragment: OfferFragment
     private lateinit var orderFragment: OrderFragment
@@ -35,6 +42,7 @@ class AccountFragment(private val reviewQuantity:Int = 0) : Fragment(R.layout.fr
     private lateinit var ratingQuantity: TextView
     private lateinit var accountTabLayout: TabLayout
     private lateinit var lastSelectedTabFragment: Fragment
+    private lateinit var deleteAccountBtn: MaterialButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,6 +54,7 @@ class AccountFragment(private val reviewQuantity:Int = 0) : Fragment(R.layout.fr
         usernameView = view.findViewById(R.id.username)
         profileImage = view.findViewById(R.id.profileImage)
         ratingQuantity = view.findViewById(R.id.ratingQuantity)
+        deleteAccountBtn = view.findViewById(R.id.deleteAccountBtn)
 
         initUserDetails()
 
@@ -77,6 +86,10 @@ class AccountFragment(private val reviewQuantity:Int = 0) : Fragment(R.layout.fr
         })
 
         lastSelectedTabFragment = offerFragment
+
+        deleteAccountBtn.setOnClickListener {
+            deleteAccount()
+        }
     }
 
     override fun onStart() {
@@ -92,6 +105,46 @@ class AccountFragment(private val reviewQuantity:Int = 0) : Fragment(R.layout.fr
         }
 
         lastSelectedTabFragment = fragment
+    }
+
+    private fun deleteAccount(){
+        val url = "${MainActivity.IP}/delete"
+
+        val jsonObject = JSONObject()
+
+        try {
+            jsonObject.put("userUUID", user.userUUID)
+                    .put("username", user.username)
+                    .put("firstname", user.firstname)
+                    .put("surname", user.surname)
+                    .put("profileImage", user.profileImage)
+        }catch (e: JSONException){
+            e.printStackTrace()
+        }
+
+        val mediaType = "application/json; charset=utf-8".toMediaType()
+        val body = jsonObject.toString().toRequestBody(mediaType)
+
+        val request = Request.Builder()
+                .url(url)
+                .delete(body)
+                .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object: Callback{
+            override fun onResponse(call: Call, response: Response) {
+                if(response.code == 200){
+                    uuid = ""
+                    user = User()
+                    setUUIDtoEmpty(requireContext())
+                    (activity as HomeActivity).openLoginActivity()
+                }
+
+                response.close()
+            }
+
+            override fun onFailure(call: Call, e: IOException) {}
+        })
     }
 
     private fun getStarReview(){
@@ -133,7 +186,7 @@ class AccountFragment(private val reviewQuantity:Int = 0) : Fragment(R.layout.fr
         lastnameView.text = user.surname
         usernameView.text = user.username
         profileImage.setImageBitmap(decodeImage(user.profileImage))
-        ratingQuantity.text = "${reviewQuantity} ratings"
+        ratingQuantity.text = "${HomeActivity.homeActivityViewModel.reviewQuantity.value} ratings"
     }
 
     private fun decodeImage(encodedImage: String): Bitmap {

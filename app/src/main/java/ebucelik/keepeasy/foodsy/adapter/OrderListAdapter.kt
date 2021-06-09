@@ -50,10 +50,20 @@ class OrderListAdapter(context: Context, orderList: OrderList) : BaseAdapter(){
         val mealPrice = rowAccOrder.findViewById<TextView>(R.id.price)
         mealPrice.text = "${getItem(position).offer.price}€"
 
-        val mealImage = rowAccOrder.findViewById<ImageView>(R.id.mealImage)
+        val firstMealImage = rowAccOrder.findViewById<ImageView>(R.id.firstMealImage)
+        val secondMealImage = rowAccOrder.findViewById<ImageView>(R.id.secMealImage)
+        val thirdMealImage = rowAccOrder.findViewById<ImageView>(R.id.thirdMealImage)
         try {
             if(getItem(position).offer.encodedImage != null){
-                mealImage.setImageBitmap(decodeImage(getItem(position).offer.encodedImage))
+                firstMealImage.setImageBitmap(decodeImage(getItem(position).offer.encodedImage))
+            }
+
+            if(getItem(position).offer.encodedImage1 != null){
+                secondMealImage.setImageBitmap(decodeImage(getItem(position).offer.encodedImage1))
+            }
+
+            if(getItem(position).offer.encodedImage2 != null){
+                thirdMealImage.setImageBitmap(decodeImage(getItem(position).offer.encodedImage2))
             }
         }catch (e: Exception){
             e.printStackTrace()

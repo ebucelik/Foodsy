@@ -14,35 +14,15 @@ import ebucelik.keepeasy.foodsy.viewmodels.LoginActivityViewModel
 
 class LogInActivity : AppCompatActivity() {
 
-    val loginFragment: LogInFragment = LogInFragment()
-    val registrationFragment: RegistrationFragment = RegistrationFragment()
-    lateinit var loginActivityViewModel: LoginActivityViewModel
+    companion object{
+        lateinit var loginActivityViewModel: LoginActivityViewModel
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
 
         loginActivityViewModel = ViewModelProvider(this).get(LoginActivityViewModel::class.java)
-
-        loginActivityViewModel.username.observe(this, Observer { username ->
-            loginFragment.setUsername(username)
-        })
-
-        loginActivityViewModel.password.observe(this, Observer { password ->
-            loginFragment.setPassword(password)
-        })
-
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flLoginActivity, loginFragment)
-            commit()
-        }
-    }
-
-    fun changeFragment(frag: Fragment){
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flLoginActivity, frag)
-            commit()
-        }
     }
 
     fun openHomeActivity(){

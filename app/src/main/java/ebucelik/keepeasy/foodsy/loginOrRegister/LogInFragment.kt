@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.findNavController
 import ebucelik.keepeasy.foodsy.Globals
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
@@ -29,6 +30,8 @@ class LogInFragment() : Fragment(R.layout.fragment_log_in) {
 
         binding = FragmentLogInBinding.bind(view)
 
+        binding.loginRegisterViewModel = LogInActivity.loginActivityViewModel
+
         binding.loginBtn.setOnClickListener {
             if(checkUsername() && checkPassword()){
                 login()
@@ -36,32 +39,8 @@ class LogInFragment() : Fragment(R.layout.fragment_log_in) {
         }
 
         binding.notRegistered.setOnClickListener {
-            (activity as LogInActivity).changeFragment((activity as LogInActivity).registrationFragment)
+            view.findNavController().navigate(R.id.action_logInFragment_to_registrationFragment)
         }
-
-        setOnFocusChangeListener()
-    }
-
-    private fun setOnFocusChangeListener(){
-        binding.username.setOnFocusChangeListener { view, focus ->
-            if(!focus){
-                (activity as LogInActivity).loginActivityViewModel.setUsername(binding.username.text.toString())
-            }
-        }
-
-        binding.password.setOnFocusChangeListener { view, focus ->
-            if(!focus){
-                (activity as LogInActivity).loginActivityViewModel.setPassword(binding.password.text.toString())
-            }
-        }
-    }
-
-    fun setUsername(username: String){
-        binding.username.setText(username)
-    }
-
-    fun setPassword(password: String){
-        binding.password.setText(password)
     }
 
     private fun checkPassword():Boolean {

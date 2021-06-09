@@ -16,8 +16,8 @@ import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
     companion object{
-        const val IP = "http://10.0.2.2:8080"
-        //const val IP = "https://myfood-backend.herokuapp.com"
+        //const val IP = "http://10.0.2.2:8080"
+        const val IP = "https://myfood-backend.herokuapp.com"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

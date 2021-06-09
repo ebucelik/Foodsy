@@ -4,7 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.navigation.findNavController
+import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.Globals.setUUIDtoEmpty
 import ebucelik.keepeasy.foodsy.Globals.user
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
@@ -39,7 +42,7 @@ class HomeFragment() : Fragment(R.layout.fragment_home){
         }
 
         binding.logout.setOnClickListener {
-            setUUIDtoEmpty()
+            setUUIDtoEmpty(requireContext())
             user = User()
             (activity as HomeActivity).openLoginActivity()
         }
@@ -76,11 +79,5 @@ class HomeFragment() : Fragment(R.layout.fragment_home){
         })
     }
 
-    private fun setUUIDtoEmpty(){
-        val sharedPref = activity?.getSharedPreferences("uuid", Context.MODE_PRIVATE)
-        sharedPref
-                ?.edit()
-                ?.putString(R.string.uuid.toString(), "")
-                ?.apply()
-    }
+
 }

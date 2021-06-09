@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
+import ebucelik.keepeasy.foodsy.Globals.selectedOrder
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.entitiy.Offer
@@ -55,7 +56,8 @@ class ReviewActivity : AppCompatActivity() {
         val price = findViewById<TextView>(R.id.price)
         reviewText = findViewById<TextInputEditText>(R.id.reviewText)
 
-        order = intent.getSerializableExtra(HomeActivity.ORDER) as Order
+        //order = intent.getSerializableExtra(HomeActivity.ORDER) as Order
+        order = selectedOrder
         offeredUserUuid = order.offer.user?.userUUID ?: ""
         mealName.text = order.offer.mealName
         mealCategory.text = order.offer.category
@@ -136,6 +138,7 @@ class ReviewActivity : AppCompatActivity() {
                 this@ReviewActivity.runOnUiThread {
                     if(response.code == 201){
                         Toast.makeText(baseContext, "Your rating is successfully sent.", Toast.LENGTH_SHORT).show()
+                        selectedOrder = Order()
                         finish()
                     }else{
                         Toast.makeText(baseContext, "Server error.", Toast.LENGTH_SHORT).show()

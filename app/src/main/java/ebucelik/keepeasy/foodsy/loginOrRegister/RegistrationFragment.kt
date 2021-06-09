@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.google.gson.GsonBuilder
 import ebucelik.keepeasy.foodsy.Globals
 import ebucelik.keepeasy.foodsy.Globals.user
@@ -41,8 +42,10 @@ class RegistrationFragment() : Fragment(R.layout.fragment_registration) {
 
         binding = FragmentRegistrationBinding.bind(view)
 
+        binding.loginRegisterViewModel = LogInActivity.loginActivityViewModel
+
         binding.registered.setOnClickListener {
-            (activity as LogInActivity).changeFragment((activity as LogInActivity).loginFragment)
+            view.findNavController().popBackStack()
         }
 
         binding.profileImage.setOnClickListener {
@@ -56,76 +59,17 @@ class RegistrationFragment() : Fragment(R.layout.fragment_registration) {
         }
 
         setViewContent()
-        setOnFocusChangeListener()
     }
 
     private fun setViewContent(){
-        (activity as LogInActivity).loginActivityViewModel.profileImageRegistration.observe(viewLifecycleOwner, Observer { profileImage ->
+        LogInActivity.loginActivityViewModel.profileImageRegistration.observe(viewLifecycleOwner, Observer { profileImage ->
             setProfileImage(profileImage)
         })
-
-        (activity as LogInActivity).loginActivityViewModel.usernameRegistration.observe(viewLifecycleOwner, Observer { username ->
-            setUsername(username)
-        })
-
-        (activity as LogInActivity).loginActivityViewModel.passwordRegistration.observe(viewLifecycleOwner, Observer { password ->
-            setPassword(password)
-        })
-
-        (activity as LogInActivity).loginActivityViewModel.firstnameRegistration.observe(viewLifecycleOwner, Observer { firstname ->
-            setFirstname(firstname)
-        })
-
-        (activity as LogInActivity).loginActivityViewModel.lastnameRegistration.observe(viewLifecycleOwner, Observer { lastname ->
-            setLastname(lastname)
-        })
-    }
-
-    private fun setOnFocusChangeListener(){
-        binding.firstname.setOnFocusChangeListener { view, focus ->
-            if(!focus){
-                (activity as LogInActivity).loginActivityViewModel.setFirstnameRegistration(binding.firstname.text.toString())
-            }
-        }
-
-        binding.lastname.setOnFocusChangeListener { view, focus ->
-            if(!focus){
-                (activity as LogInActivity).loginActivityViewModel.setLastnameRegistration(binding.lastname.text.toString())
-            }
-        }
-
-        binding.username.setOnFocusChangeListener { view, focus ->
-            if(!focus){
-                (activity as LogInActivity).loginActivityViewModel.setUsernameRegistration(binding.username.text.toString())
-            }
-        }
-
-        binding.password.setOnFocusChangeListener { view, focus ->
-            if(!focus){
-                (activity as LogInActivity).loginActivityViewModel.setPasswordRegistration(binding.password.text.toString())
-            }
-        }
     }
 
     private fun setProfileImage(uri: Uri){
         binding.profileImage.setImageURI(uri)
         imageURI = uri
-    }
-
-    private fun setUsername(username: String){
-        binding.username.setText(username)
-    }
-
-    private fun setPassword(password: String){
-        binding.password.setText(password)
-    }
-
-    private fun setFirstname(firstname: String){
-        binding.firstname.setText(firstname)
-    }
-
-    private fun setLastname(lastname: String){
-        binding.lastname.setText(lastname)
     }
 
     private fun selectImageFromGallery(){
@@ -139,7 +83,7 @@ class RegistrationFragment() : Fragment(R.layout.fragment_registration) {
 
         if(resultCode == Activity.RESULT_OK && requestCode == 1){
             imageURI = data?.data
-            imageURI?.let { (activity as LogInActivity).loginActivityViewModel.setProfileImage(it) }
+            imageURI?.let { LogInActivity.loginActivityViewModel.profileImageRegistration.value = it }
             binding.profileImage.setImageURI(imageURI)
             encodeImage()
         }

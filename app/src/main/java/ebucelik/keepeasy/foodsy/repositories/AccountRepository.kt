@@ -26,7 +26,7 @@ object AccountRepository {
                 Handler(Looper.getMainLooper()).post {
                     if(response.code == 200){
                         if (body != null) {
-                            HomeActivity.homeActivityViewModel.setReviewQuantity(body.toInt())
+                            HomeActivity.homeActivityViewModel.reviewQuantity.value = body.toInt()
                         }
                     }
                 }

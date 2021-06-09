@@ -38,4 +38,5 @@
     <string name="offer_meal">OFFER MEAL</string>
     <string name="star_rating">star_rating</string>
     <string name="mealprice">Mealprice in €</string>
+    <string name="delete_account">Delete account</string>
 </resources>

@@ -7,10 +7,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toDrawable
 import ebucelik.keepeasy.foodsy.Globals.user
 import ebucelik.keepeasy.foodsy.Globals.uuid
 import ebucelik.keepeasy.foodsy.MainActivity
@@ -27,20 +29,29 @@ import java.io.IOException
 import java.time.LocalDateTime
 import java.util.*
 
-class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragment_sell) {
+class SellFragment() : Fragment(R.layout.fragment_sell) {
 
     private val REQUEST_SELECT_IMAGE_IN_ALBUM = 1
     private lateinit var binding: FragmentSellBinding
-    private var imageURI: String = ""
+    private var imageUriList = mutableListOf("", "", "")
+    private var imageEncodedList = mutableListOf("", "", "")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSellBinding.bind(view)
 
+        binding.homeActivityViewModel = HomeActivity.homeActivityViewModel
+
         setEditTextValues()
 
-        binding.mealImage.setOnClickListener {
+        binding.firstMealImage.setOnClickListener {
+            selectImageFromGallery()
+        }
+        binding.secMealImage.setOnClickListener {
+            selectImageFromGallery()
+        }
+        binding.thirdMealImage.setOnClickListener {
             selectImageFromGallery()
         }
 
@@ -54,13 +65,19 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
     }
 
     private fun setEditTextValues(){
-        if(!offer?.encodedImage.isNullOrEmpty())
-            binding.mealImage.setImageURI(Uri.parse(offer?.encodedImage))
+        if(!HomeActivity.homeActivityViewModel.currentOffer.value?.encodedImage.isNullOrEmpty()){
+            binding.firstMealImage.setImageURI(Uri.parse(HomeActivity.homeActivityViewModel.currentOffer.value?.encodedImage))
+            imageEncodedList[0] = HomeActivity.homeActivityViewModel.currentOffer.value?.encodedImage.toString()
+        }
 
-        binding.offer = offer
+        if(!HomeActivity.homeActivityViewModel.currentOffer.value?.encodedImage1.isNullOrEmpty()){
+            binding.secMealImage.setImageURI(Uri.parse(HomeActivity.homeActivityViewModel.currentOffer.value?.encodedImage1))
+            imageEncodedList[1] = HomeActivity.homeActivityViewModel.currentOffer.value?.encodedImage1.toString()
+        }
 
-        if(offer != null){
-            binding.mealPrice.setText(offer.price.toString())
+        if(!HomeActivity.homeActivityViewModel.currentOffer.value?.encodedImage2.isNullOrEmpty()){
+            binding.thirdMealImage.setImageURI(Uri.parse(HomeActivity.homeActivityViewModel.currentOffer.value?.encodedImage2))
+            imageEncodedList[2] = HomeActivity.homeActivityViewModel.currentOffer.value?.encodedImage2.toString()
         }
     }
 
@@ -91,13 +108,14 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
 
         binding.mealPrice.setOnFocusChangeListener { view, focus ->
             if(!focus){
-                setOffer()
+                //TODO: Error will be invoke. This function executes his-self after clicking on offer meal button.
+                //setOffer()
             }
         }
     }
 
     private fun setOffer(){
-        HomeActivity.homeActivityViewModel.setOffer(Offer(1, binding.mealName.text.toString(), binding.mealCategory.text.toString(), binding.mealArea.text.toString(), imageURI, binding.mealIngredients.text.toString(), Date(), binding.mealPrice.text.toString().toInt(), user))
+        HomeActivity.homeActivityViewModel.currentOffer.value = Offer(1, binding.mealName.text.toString(), binding.mealCategory.text.toString(), binding.mealArea.text.toString(), imageUriList[0], imageUriList[1], imageUriList[2], binding.mealIngredients.text.toString(), Date(), binding.mealPrice.text.toString().toInt(), user)
     }
 
     private fun checkMealName():Boolean{
@@ -154,6 +172,8 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
 
     private fun selectImageFromGallery(){
         val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_SELECT_IMAGE_IN_ALBUM)
     }
@@ -161,16 +181,44 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        imageEncodedList = mutableListOf("", "", "")
+        imageUriList = mutableListOf("", "", "")
+
         if(resultCode == RESULT_OK && requestCode == REQUEST_SELECT_IMAGE_IN_ALBUM){
-            val imageURI = data?.data
-            this.imageURI = imageURI.toString()
-            binding.mealImage.setImageURI(imageURI)
-            encodeImage()
+            if(data?.clipData != null){
+                val count = data.clipData!!.itemCount
+
+                for (i in 0 until count){
+                    val imageUri: Uri = data.clipData!!.getItemAt(i).uri
+
+                    when(i){
+                        0 -> {
+                            binding.firstMealImage.setImageURI(imageUri)
+                            imageUriList[0] = imageUri.toString()
+                            imageEncodedList[0] = encodeImage(binding.firstMealImage.drawable.toBitmap())
+                        }
+                        1 -> {
+                            binding.secMealImage.setImageURI(imageUri)
+                            imageUriList[1] = imageUri.toString()
+                            imageEncodedList[1] = encodeImage(binding.secMealImage.drawable.toBitmap())
+                        }
+                        2 -> {
+                            binding.thirdMealImage.setImageURI(imageUri)
+                            imageUriList[2] = imageUri.toString()
+                            imageEncodedList[2] = encodeImage(binding.thirdMealImage.drawable.toBitmap())
+                        }
+                    }
+                }
+            }else{
+                val imageURI = data?.data
+                imageUriList[0] = imageURI.toString()
+                binding.firstMealImage.setImageURI(imageURI)
+                imageEncodedList[0] = encodeImage(binding.firstMealImage.drawable.toBitmap())
+            }
         }
     }
 
-    private fun encodeImage():String{
-        val bitmap = binding.mealImage.drawable.toBitmap()
+    private fun encodeImage(bitmap: Bitmap):String{
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
         val byteArray = byteArrayOutputStream.toByteArray()
@@ -187,7 +235,9 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
                     .put("mealName", binding.mealName.text)
                     .put("category", binding.mealCategory.text)
                     .put("area", binding.mealArea.text)
-                    .put("encodedImage", encodeImage())
+                    .put("encodedImage", encodeImage(binding.firstMealImage.drawable.toBitmap()))
+                    .put("encodedImage1", encodeImage(binding.secMealImage.drawable.toBitmap()))
+                    .put("encodedImage2", encodeImage(binding.thirdMealImage.drawable.toBitmap()))
                     .put("ingredients", binding.mealIngredients.text)
                     .put("timestamp", LocalDateTime.now())
                     .put("price", binding.mealPrice.text.toString().toInt())
@@ -210,13 +260,17 @@ class SellFragment(private val offer: Offer? = null) : Fragment(R.layout.fragmen
                 if(response.code == 201){
                     activity?.runOnUiThread{
                         Toast.makeText(activity, "Your meal offer is successfully created.", Toast.LENGTH_SHORT).show()
-                        imageURI = ""
+                        imageUriList = mutableListOf()
+                        imageEncodedList = mutableListOf()
                         binding.mealName.setText("")
                         binding.mealCategory.setText("")
                         binding.mealArea.setText("")
                         binding.mealIngredients.setText("")
-                        binding.mealImage.setImageResource(R.drawable.ic_round_add_photo_alternate_24)
+                        binding.firstMealImage.setImageResource(R.drawable.ic_round_add_photo_alternate_24)
+                        binding.secMealImage.setImageResource(R.drawable.ic_round_add_photo_alternate_24)
+                        binding.thirdMealImage.setImageResource(R.drawable.ic_round_add_photo_alternate_24)
                         binding.mealPrice.setText("0")
+                        HomeActivity.homeActivityViewModel.currentOffer.value = null
                     }
                 }
 

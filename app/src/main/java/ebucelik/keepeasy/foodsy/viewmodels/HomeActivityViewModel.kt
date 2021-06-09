@@ -4,24 +4,20 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ebucelik.keepeasy.foodsy.entitiy.Chat
+import ebucelik.keepeasy.foodsy.entitiy.ChatPool
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.repositories.AccountRepository
 
 class HomeActivityViewModel : ViewModel() {
 
-    private var _currentOffer = MutableLiveData<Offer>()
-    val currentOffer: LiveData<Offer>
-        get() = _currentOffer
+    val currentOffer = MutableLiveData<Offer>()
 
-    private var _reviewQuantity = MutableLiveData<Int>()
-    val reviewQuantity: LiveData<Int>
-        get() = _reviewQuantity
+    val reviewQuantity = MutableLiveData<Int>()
 
-    fun setOffer(offer: Offer){
-        _currentOffer.value = offer
-    }
+    private var _offerList = MutableLiveData<List<Offer>>()
+    val offerList: LiveData<List<Offer>>
+        get() = _offerList
 
-    fun setReviewQuantity(reviewQty: Int){
-        _reviewQuantity.value = reviewQty
-    }
+    var chatPoolList = MutableLiveData<List<ChatPool>>()
 }

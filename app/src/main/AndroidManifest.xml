@@ -10,7 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodsy"
         android:usesCleartextTraffic="true">
-        <activity android:name=".account.ReviewActivity"
+        <activity android:name=".home.MessageActivity"></activity>
+        <activity
+            android:name=".account.ReviewActivity"
             android:theme="@style/Theme.Foodsy.NoActionBar" />
         <activity
             android:name=".account.UserActivity"
@@ -53,8 +55,8 @@
             android:name="com.google.android.wearable"
             android:required="false" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
