@@ -4,22 +4,26 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.navigation.findNavController
+import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.Globals.setUUIDtoEmpty
+import ebucelik.keepeasy.foodsy.Globals.user
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.adapter.OfferListAdapter
 import ebucelik.keepeasy.foodsy.databinding.FragmentHomeBinding
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.OfferList
+import ebucelik.keepeasy.foodsy.entitiy.User
 import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 
-class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
+class HomeFragment() : Fragment(R.layout.fragment_home){
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var offerList: OfferList
-    private val homeActivity: HomeActivity = home
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,15 +35,16 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
         binding.homeListView.setOnItemClickListener { parent, view, position, id ->
             val offer = parent.getItemAtPosition(position) as Offer
             try {
-                homeActivity.openOfferDetailActivity(offer)
+                (activity as HomeActivity).openOfferDetailActivity(offer)
             }catch (e: ArrayIndexOutOfBoundsException){
                 e.printStackTrace()
             }
         }
 
         binding.logout.setOnClickListener {
-            setUUIDtoEmpty()
-            homeActivity.openLoginActivity()
+            setUUIDtoEmpty(requireContext())
+            user = User()
+            (activity as HomeActivity).openLoginActivity()
         }
     }
 
@@ -74,11 +79,5 @@ class HomeFragment(home: HomeActivity) : Fragment(R.layout.fragment_home){
         })
     }
 
-    private fun setUUIDtoEmpty(){
-        val sharedPref = activity?.getSharedPreferences("uuid", Context.MODE_PRIVATE)
-        sharedPref
-                ?.edit()
-                ?.putString(R.string.uuid.toString(), "")
-                ?.apply()
-    }
+
 }

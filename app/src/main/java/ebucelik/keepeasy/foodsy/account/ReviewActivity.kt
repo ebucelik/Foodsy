@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.textfield.TextInputEditText
+import ebucelik.keepeasy.foodsy.Globals.selectedOrder
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.entitiy.Offer
@@ -28,6 +30,7 @@ class ReviewActivity : AppCompatActivity() {
     private lateinit var offeredUserUuid: String
     private lateinit var order: Order
     private var reviewedPoints: Int = 0
+    private lateinit var reviewText: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,24 +53,28 @@ class ReviewActivity : AppCompatActivity() {
         val reviewMeal = findViewById<Button>(R.id.rateBtn)
         val offeredDate = findViewById<TextView>(R.id.offeredDate)
         val profileImage = findViewById<ImageView>(R.id.profileImage)
+        val price = findViewById<TextView>(R.id.price)
+        reviewText = findViewById<TextInputEditText>(R.id.reviewText)
 
-        order = intent.getSerializableExtra(HomeActivity.ORDER) as Order
-        offeredUserUuid = order.offer.user.userUUID
+        //order = intent.getSerializableExtra(HomeActivity.ORDER) as Order
+        order = selectedOrder
+        offeredUserUuid = order.offer.user?.userUUID ?: ""
         mealName.text = order.offer.mealName
         mealCategory.text = order.offer.category
         mealArea.text = order.offer.area
         mealIngredients.text = order.offer.ingredients
+        price.text = "${order.offer.price}€"
 
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
         offeredDate.text = simpleDateFormat.format(order.offer.currentTimestamp)
-        username.text = order.offer.user.username
+        username.text = order.offer.user?.username
 
         if(order.offer.encodedImage != ""){
             mealImage.setImageBitmap(decodeImage(order.offer.encodedImage))
         }
 
-        if(order.offer.user.profileImage != ""){
-            profileImage.setImageBitmap(decodeImage(order.offer.user.profileImage))
+        if(order.offer.user?.profileImage != null && order.offer.user?.profileImage != ""){
+            profileImage.setImageBitmap(order.offer.user?.let { decodeImage(it.profileImage) })
         }
 
         reviewMeal.setOnClickListener {
@@ -112,7 +119,7 @@ class ReviewActivity : AppCompatActivity() {
             jsonObject
                     .put("reviewPoints", reviewedPoints)
                     .put("orderId", order.id)
-                    .put("reviewText", "")
+                    .put("reviewText", reviewText.text.toString())
         }catch (e: JSONException){
             e.printStackTrace()
         }
@@ -131,6 +138,7 @@ class ReviewActivity : AppCompatActivity() {
                 this@ReviewActivity.runOnUiThread {
                     if(response.code == 201){
                         Toast.makeText(baseContext, "Your rating is successfully sent.", Toast.LENGTH_SHORT).show()
+                        selectedOrder = Order()
                         finish()
                     }else{
                         Toast.makeText(baseContext, "Server error.", Toast.LENGTH_SHORT).show()

@@ -29,4 +29,14 @@
     <string name="title_activity_user">UserActivity</string>
     <string name="order_meal">Order Meal</string>
     <string name="logout">Logout</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="meal_image">Meal Image</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="meal_category_e_g_vegetarian">Meal Category (e.g. Vegetarian)</string>
+    <string name="meal_area_e_g_italy">Meal Area (e.g. Italy)</string>
+    <string name="meal_ingredients_e_g_penne">Meal Ingredients (e.g. Penne)</string>
+    <string name="offer_meal">OFFER MEAL</string>
+    <string name="star_rating">star_rating</string>
+    <string name="mealprice">Mealprice in €</string>
+    <string name="delete_account">Delete account</string>
 </resources>

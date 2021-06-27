@@ -44,13 +44,23 @@ class OfferListAdapter(context: Context, _offerList: OfferList) : BaseAdapter(){
         val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm")
         binding.offeredDate.text = simpleDateFormat.format(offer.currentTimestamp)
 
+        binding.price.text = "${offer.price} €"
+
         try {
             if(!offer.encodedImage.isNullOrEmpty()){
-                binding.mealImage.setImageBitmap(decodeImage(offer.encodedImage))
+                binding.firstMealImage.setImageBitmap(decodeImage(offer.encodedImage))
             }
 
-            if(!offer.user.profileImage.isNullOrEmpty()){
-                binding.profileImage.setImageBitmap(decodeImage(offer.user.profileImage))
+            if(!offer.encodedImage1.isNullOrEmpty()){
+                binding.secMealImage.setImageBitmap(decodeImage(offer.encodedImage1))
+            }
+
+            if(!offer.encodedImage2.isNullOrEmpty()){
+                binding.thirdMealImage.setImageBitmap(decodeImage(offer.encodedImage2))
+            }
+
+            if(!offer.user?.profileImage.isNullOrEmpty()){
+                binding.profileImage.setImageBitmap(offer.user?.let { decodeImage(it.profileImage) })
             }
         }catch (e: Exception){
             e.printStackTrace()

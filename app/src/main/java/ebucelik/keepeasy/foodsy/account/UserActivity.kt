@@ -8,12 +8,15 @@ import android.util.Base64
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayout
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.entitiy.User
-import ebucelik.keepeasy.foodsy.home.HomeActivity
 import ebucelik.keepeasy.foodsy.home.OfferDetailActivity
+import ebucelik.keepeasy.foodsy.repositories.UserRepository
+import ebucelik.keepeasy.foodsy.viewmodels.UserActivityViewModel
 import okhttp3.*
 import java.io.IOException
 import java.util.ArrayList
@@ -21,12 +24,17 @@ import java.util.ArrayList
 class UserActivity : AppCompatActivity() {
 
     private lateinit var offerFragment: OfferFragment
+    private lateinit var receivedReviewFragment: ReceivedReviewFragment
     private lateinit var rates: ArrayList<ImageView>
     private lateinit var user: User
-    private lateinit var firstnameView: TextView
-    private lateinit var lastnameView: TextView
     private lateinit var usernameView: TextView
     private lateinit var profileImage: ImageView
+    private lateinit var ratingQuantity: TextView
+    private lateinit var tabLayout: TabLayout
+
+    companion object{
+        lateinit var userActivityViewModel: UserActivityViewModel
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,11 +42,20 @@ class UserActivity : AppCompatActivity() {
 
         user = intent.getSerializableExtra(OfferDetailActivity.USER) as User
 
-        firstnameView = findViewById(R.id.firstname)
-        lastnameView = findViewById(R.id.lastname)
         usernameView = findViewById(R.id.username)
         profileImage = findViewById(R.id.profileImage)
         offerFragment = OfferFragment(user.userUUID)
+        receivedReviewFragment = ReceivedReviewFragment(user.userUUID)
+        ratingQuantity = findViewById(R.id.ratingQuantity)
+        tabLayout = findViewById(R.id.accountTabLayout)
+
+        userActivityViewModel = ViewModelProvider(this).get(UserActivityViewModel::class.java)
+
+        userActivityViewModel.reviewQuantity.observe(this, Observer { reviewQuantity ->
+            ratingQuantity.text = "${reviewQuantity} ratings"
+        })
+
+        UserRepository.getReviewQuantity(user.userUUID)
 
         rates = arrayListOf(
                 findViewById(R.id.rate1),
@@ -48,8 +65,6 @@ class UserActivity : AppCompatActivity() {
                 findViewById(R.id.rate5)
         )
 
-        firstnameView.text = user.firstname
-        lastnameView.text = user.surname
         usernameView.text = user.username
 
         if (user.profileImage != null){
@@ -57,6 +72,19 @@ class UserActivity : AppCompatActivity() {
         }
 
         getStarReview()
+
+        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when(tab?.position){
+                    0 -> changeFragment(offerFragment)
+                    1 -> changeFragment(receivedReviewFragment)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
 
         changeFragment(offerFragment)
     }

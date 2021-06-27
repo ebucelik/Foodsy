@@ -6,161 +6,234 @@
     android:layout_height="match_parent"
     tools:context=".home.AccountFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <ImageView
-        android:id="@+id/logoImage"
-        style="@style/marginStyle"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="@dimen/marginStartEnd"
-        android:contentDescription="@string/logo"
-        android:src="@drawable/ic_logo"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_round_person_add_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoImage" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/rate1"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_round_star_rate_24"
-        app:layout_constraintEnd_toStartOf="@+id/rate2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toBottomOf="@+id/usernameLabel" />
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="@string/profile_image"
+                    android:src="@drawable/ic_round_person_add_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/logoImage" />
 
-    <ImageView
-        android:id="@+id/rate2"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_round_star_rate_24"
-        app:layout_constraintEnd_toStartOf="@+id/rate3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/rate1"
-        app:layout_constraintTop_toTopOf="@+id/rate1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/rate3"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_round_star_rate_24"
-        app:layout_constraintEnd_toStartOf="@+id/rate4"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/rate2"
-        app:layout_constraintTop_toTopOf="@+id/rate2" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-    <ImageView
-        android:id="@+id/rate4"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_round_star_rate_24"
-        app:layout_constraintEnd_toStartOf="@+id/rate5"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/rate3"
-        app:layout_constraintTop_toTopOf="@+id/rate3" />
+                        <TextView
+                            android:id="@+id/firstnameLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="First Name:"
+                            app:layout_constraintEnd_toStartOf="@+id/firstname"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/profileImage"
+                            app:layout_constraintTop_toTopOf="@+id/profileImage" />
 
-    <ImageView
-        android:id="@+id/rate5"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_round_star_rate_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/rate4"
-        app:layout_constraintTop_toTopOf="@+id/rate4" />
+                        <TextView
+                            android:id="@+id/firstname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:text="Max"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/firstnameLabel"
+                            app:layout_constraintTop_toTopOf="@+id/firstnameLabel" />
+                    </LinearLayout>
 
-    <TextView
-        android:id="@+id/firstnameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="First Name:"
-        app:layout_constraintEnd_toStartOf="@+id/firstname"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toTopOf="@+id/profileImage" />
 
-    <TextView
-        android:id="@+id/firstname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Max"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/firstnameLabel"
-        app:layout_constraintTop_toTopOf="@+id/firstnameLabel" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-    <TextView
-        android:id="@+id/lastnameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Last Name:"
-        app:layout_constraintEnd_toStartOf="@+id/firstname"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toBottomOf="@+id/firstnameLabel" />
+                        <TextView
+                            android:id="@+id/lastnameLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Last Name:"
+                            app:layout_constraintEnd_toStartOf="@+id/firstname"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/profileImage"
+                            app:layout_constraintTop_toBottomOf="@+id/firstnameLabel" />
 
-    <TextView
-        android:id="@+id/lastname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mustermann"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/firstnameLabel"
-        app:layout_constraintTop_toTopOf="@+id/lastnameLabel" />
+                        <TextView
+                            android:id="@+id/lastname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:text="Mustermann"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/firstnameLabel"
+                            app:layout_constraintTop_toTopOf="@+id/lastnameLabel" />
+                    </LinearLayout>
 
-    <TextView
-        android:id="@+id/usernameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Username:"
-        app:layout_constraintEnd_toStartOf="@+id/firstname"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toBottomOf="@+id/lastnameLabel" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
 
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="max.musti10"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/firstnameLabel"
-        app:layout_constraintTop_toTopOf="@+id/usernameLabel" />
+                        <TextView
+                            android:id="@+id/usernameLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Username:"
+                            app:layout_constraintEnd_toStartOf="@+id/firstname"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/profileImage"
+                            app:layout_constraintTop_toBottomOf="@+id/lastnameLabel" />
+
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:text="max.musti10"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/firstnameLabel"
+                            app:layout_constraintTop_toTopOf="@+id/usernameLabel" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/rate1"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="16dp"
+                            android:contentDescription="@string/star_rating"
+                            android:src="@drawable/ic_round_star_rate_24"
+                            app:layout_constraintEnd_toStartOf="@+id/rate2"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/profileImage"
+                            app:layout_constraintTop_toBottomOf="@+id/usernameLabel" />
+
+                        <ImageView
+                            android:id="@+id/rate2"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:contentDescription="@string/star_rating"
+                            android:src="@drawable/ic_round_star_rate_24"
+                            app:layout_constraintEnd_toStartOf="@+id/rate3"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/rate1"
+                            app:layout_constraintTop_toTopOf="@+id/rate1" />
+
+                        <ImageView
+                            android:id="@+id/rate3"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:contentDescription="@string/star_rating"
+                            android:src="@drawable/ic_round_star_rate_24"
+                            app:layout_constraintEnd_toStartOf="@+id/rate4"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/rate2"
+                            app:layout_constraintTop_toTopOf="@+id/rate2" />
+
+                        <ImageView
+                            android:id="@+id/rate4"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:contentDescription="@string/star_rating"
+                            android:src="@drawable/ic_round_star_rate_24"
+                            app:layout_constraintEnd_toStartOf="@+id/rate5"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/rate3"
+                            app:layout_constraintTop_toTopOf="@+id/rate3" />
+
+                        <ImageView
+                            android:id="@+id/rate5"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="16dp"
+                            android:contentDescription="@string/star_rating"
+                            android:src="@drawable/ic_round_star_rate_24"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/rate4"
+                            app:layout_constraintTop_toTopOf="@+id/rate4" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/ratingQuantity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/deleteAccountBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:textSize="12dp"
+                        android:backgroundTint="@color/white"
+                        android:textColor="@color/green"
+                        android:text="@string/delete_account" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <FrameLayout
         android:id="@+id/fLAccountFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileImage">
+        app:layout_constraintTop_toBottomOf="@+id/scrollView">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/accountTabLayout"
@@ -178,6 +251,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ordered Meals" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/reviewTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RECEIVED REVIEWS" />
         </com.google.android.material.tabs.TabLayout>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

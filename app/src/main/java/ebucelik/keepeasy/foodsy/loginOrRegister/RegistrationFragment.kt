@@ -12,7 +12,11 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.Globals
+import ebucelik.keepeasy.foodsy.Globals.user
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.databinding.FragmentRegistrationBinding
@@ -28,11 +32,9 @@ import java.io.IOException
 /**
  * A simple [Fragment] subclass.
  */
-class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fragment_registration) {
+class RegistrationFragment() : Fragment(R.layout.fragment_registration) {
 
     private lateinit var binding: FragmentRegistrationBinding
-    private var logInActivity: LogInActivity = _logInActivity
-    private lateinit var user: User
     private var imageURI: Uri? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,8 +42,10 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
 
         binding = FragmentRegistrationBinding.bind(view)
 
+        binding.loginRegisterViewModel = LogInActivity.loginActivityViewModel
+
         binding.registered.setOnClickListener {
-            logInActivity.changeFragment(logInActivity.loginFragment)
+            view.findNavController().popBackStack()
         }
 
         binding.profileImage.setOnClickListener {
@@ -53,6 +57,19 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
                 createUser()
             }
         }
+
+        setViewContent()
+    }
+
+    private fun setViewContent(){
+        LogInActivity.loginActivityViewModel.profileImageRegistration.observe(viewLifecycleOwner, Observer { profileImage ->
+            setProfileImage(profileImage)
+        })
+    }
+
+    private fun setProfileImage(uri: Uri){
+        binding.profileImage.setImageURI(uri)
+        imageURI = uri
     }
 
     private fun selectImageFromGallery(){
@@ -66,6 +83,7 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
 
         if(resultCode == Activity.RESULT_OK && requestCode == 1){
             imageURI = data?.data
+            imageURI?.let { LogInActivity.loginActivityViewModel.profileImageRegistration.value = it }
             binding.profileImage.setImageURI(imageURI)
             encodeImage()
         }
@@ -178,8 +196,9 @@ class RegistrationFragment(_logInActivity: LogInActivity) : Fragment(R.layout.fr
                 activity?.runOnUiThread {
                     when (response.code) {
                         201 -> {
+                            Globals.uuid = user.userUUID
                             saveUUID()
-                            logInActivity.openHomeActivity()
+                            (activity as LogInActivity).openHomeActivity()
                         }
                         409 -> {
                             Toast.makeText(activity, "This Username already exists.", Toast.LENGTH_SHORT).show()

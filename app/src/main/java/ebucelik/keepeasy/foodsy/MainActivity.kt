@@ -7,21 +7,17 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
-import ebucelik.keepeasy.foodsy.UserGlobal.user
+import ebucelik.keepeasy.foodsy.Globals.user
 import ebucelik.keepeasy.foodsy.entitiy.User
 import ebucelik.keepeasy.foodsy.home.HomeActivity
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
 import okhttp3.*
 import java.io.IOException
 
-object UserGlobal{
-    lateinit var user: User
-}
-
 class MainActivity : AppCompatActivity() {
     companion object{
-        const val IP = "http://10.0.2.2:8080"
-        //const val IP = "https://myfood-backend.herokuapp.com"
+        //const val IP = "http://10.0.2.2:8080"
+        const val IP = "https://myfood-backend.herokuapp.com"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +65,7 @@ class MainActivity : AppCompatActivity() {
                     when(response.code){
                         200 -> {
                             user = gson.fromJson(body, User::class.java)
+                            Globals.uuid = user.userUUID
 
                             showHomeScreen()
                         }

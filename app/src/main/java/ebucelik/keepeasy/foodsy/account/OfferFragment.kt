@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.Globals
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.adapter.OfferListAdapter
@@ -12,7 +13,7 @@ import ebucelik.keepeasy.foodsy.entitiy.OfferList
 import okhttp3.*
 import java.io.IOException
 
-class OfferFragment(private val uuid:String) : Fragment(R.layout.fragment_offer) {
+class OfferFragment(private var uuid: String = Globals.uuid) : Fragment(R.layout.fragment_offer) {
 
     private lateinit var binding: FragmentOfferBinding
     private lateinit var offerList: OfferList
@@ -42,7 +43,7 @@ class OfferFragment(private val uuid:String) : Fragment(R.layout.fragment_offer)
                 offerList = gson.fromJson(body, OfferList::class.java)
 
                 activity?.runOnUiThread {
-                    binding.offerListView.adapter = OfferListAdapter(activity?.baseContext!!, offerList)
+                    binding.offerList.adapter = OfferListAdapter(activity?.baseContext!!, offerList)
                 }
 
                 response.close()

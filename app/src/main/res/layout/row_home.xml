@@ -9,86 +9,135 @@
             type="ebucelik.keepeasy.foodsy.entitiy.Offer" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="12dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants"
+        android:paddingBottom="12dp">
 
-    <ImageView
-        android:id="@+id/mealImage"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:src="@mipmap/pomodorofusilli"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileImage" />
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileImage">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/firstMealImage"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:padding="8dp"
+                    android:contentDescription="@string/meal_image"
+                    android:src="@drawable/ic_round_add_photo_alternate_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/offeredDateHint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Offered Date:"
-        android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="@+id/mealName"
-        app:layout_constraintTop_toBottomOf="@+id/mealImage" />
+                <ImageView
+                    android:id="@+id/secMealImage"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:padding="8dp"
+                    android:contentDescription="@string/meal_image"
+                    android:src="@drawable/ic_round_add_photo_alternate_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/offeredDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Offered Date"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/offeredDateHint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/offeredDateHint" />
+                <ImageView
+                    android:id="@+id/thirdMealImage"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:padding="8dp"
+                    android:contentDescription="@string/meal_image"
+                    android:src="@drawable/ic_round_add_photo_alternate_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
+        </HorizontalScrollView>
 
-    <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_sharp_person"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mealName" />
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_sharp_person"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mealName" />
 
-    <TextView
-        android:id="@+id/areaHint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Area:"
-        android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="@+id/offeredDateHint"
-        app:layout_constraintTop_toBottomOf="@+id/offeredDateHint" />
+        <TextView
+            android:id="@+id/areaHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Area:"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="@+id/mealName"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
-    <TextView
-        android:id="@+id/mealName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@{offer.mealName}"
-        android:textSize="22dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/mealName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{offer.mealName}"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/mealArea"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@{offer.area}"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/areaHint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/areaHint" />
+        <TextView
+            android:id="@+id/mealArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{offer.area}"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/profileImage"
+            app:layout_constraintTop_toTopOf="@+id/areaHint" />
 
+        <TextView
+            android:id="@+id/priceHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price:"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="@+id/areaHint"
+            app:layout_constraintTop_toBottomOf="@+id/areaHint" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/mealArea"
+            app:layout_constraintTop_toTopOf="@+id/priceHint" />
+
+        <TextView
+            android:id="@+id/offeredDateHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Offered Date:"
+            android:textSize="16dp"
+            app:layout_constraintStart_toStartOf="@+id/priceHint"
+            app:layout_constraintTop_toBottomOf="@+id/priceHint" />
+
+        <TextView
+            android:id="@+id/offeredDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Offered Date"
+            app:layout_constraintEnd_toEndOf="@+id/price"
+            app:layout_constraintTop_toTopOf="@+id/offeredDateHint" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,25 +1,33 @@
 package ebucelik.keepeasy.foodsy.home
 
+import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
+import ebucelik.keepeasy.foodsy.Globals
+import ebucelik.keepeasy.foodsy.Globals.selectedOffer
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
 import ebucelik.keepeasy.foodsy.account.UserActivity
 import ebucelik.keepeasy.foodsy.databinding.ActivityMealDetailBinding
+import ebucelik.keepeasy.foodsy.entitiy.ChatPool
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.User
+import ebucelik.keepeasy.foodsy.repositories.ChatRepository
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -44,7 +52,8 @@ class OfferDetailActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_meal_detail)
 
         orderingUserUuid = intent.getStringExtra(HomeActivity.ORDERINGUUID).toString()
-        offer = intent.getSerializableExtra(HomeActivity.OFFER) as Offer
+        //offer = intent.getSerializableExtra(HomeActivity.OFFER) as Offer
+        offer = Globals.selectedOffer
 
         binding.meal = offer
 
@@ -52,11 +61,19 @@ class OfferDetailActivity : AppCompatActivity() {
         binding.offeredDate.text = simpleDateFormat.format(offer.currentTimestamp)
 
         if(offer.encodedImage != ""){
-            binding.mealImage.setImageBitmap(decodeImage(offer.encodedImage))
+            binding.firstMealImage.setImageBitmap(decodeImage(offer.encodedImage))
         }
 
-        if(offer.user.profileImage != ""){
-            binding.profileImage.setImageBitmap(decodeImage(offer.user.profileImage))
+        if(offer.encodedImage1 != ""){
+            binding.secMealImage.setImageBitmap(decodeImage(offer.encodedImage1))
+        }
+
+        if(offer.encodedImage2 != ""){
+            binding.thirdMealImage.setImageBitmap(decodeImage(offer.encodedImage2))
+        }
+
+        if(offer.user?.profileImage != null && offer.user?.profileImage != ""){
+            binding.profileImage.setImageBitmap(offer.user?.let { decodeImage(it.profileImage) })
         }
 
         binding.orderBtn.setOnClickListener {
@@ -64,8 +81,10 @@ class OfferDetailActivity : AppCompatActivity() {
         }
 
         binding.profileImage.setOnClickListener {
-            openUserProfile(offer.user)
+            offer.user?.let { it1 -> openUserProfile(it1) }
         }
+
+        binding.price.text = "${offer.price} €"
     }
 
     private fun orderMeal(offeringId:Long){
@@ -92,8 +111,23 @@ class OfferDetailActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 if(response.code == 201){
                     this@OfferDetailActivity.runOnUiThread {
-                        Toast.makeText(baseContext, "Meal is successfully ordered.", Toast.LENGTH_SHORT).show()
-                        finish()
+                        if(offer.user != null)
+                        {
+                            ChatRepository.createChatPool(ChatPool(0, Globals.user, offer.user!!), this@OfferDetailActivity)
+
+                            val builder = AlertDialog.Builder(this@OfferDetailActivity)
+                            builder.setTitle("Success")
+                            builder.setMessage("You have successfully ordered the meal. Chat now with ${offer.user?.username}.")
+
+                            builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
+                                Globals.openChatTab = true
+                                selectedOffer = Offer()
+                                finish()
+                            })
+
+                            val dialog = builder.create()
+                            dialog.show()
+                        }
                     }
                 }
 

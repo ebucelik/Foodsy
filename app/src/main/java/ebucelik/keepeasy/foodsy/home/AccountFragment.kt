@@ -1,6 +1,5 @@
 package ebucelik.keepeasy.foodsy.home
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -10,44 +9,53 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.Globals.setUUIDtoEmpty
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
-import ebucelik.keepeasy.foodsy.UserGlobal
-import ebucelik.keepeasy.foodsy.UserGlobal.user
+import ebucelik.keepeasy.foodsy.Globals.user
+import ebucelik.keepeasy.foodsy.Globals.uuid
 import ebucelik.keepeasy.foodsy.account.OfferFragment
 import ebucelik.keepeasy.foodsy.account.OrderFragment
-import ebucelik.keepeasy.foodsy.entitiy.Order
+import ebucelik.keepeasy.foodsy.account.ReceivedReviewFragment
 import ebucelik.keepeasy.foodsy.entitiy.User
+import ebucelik.keepeasy.foodsy.repositories.AccountRepository
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
 import java.util.ArrayList
-import kotlin.math.round
 
-class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R.layout.fragment_account) {
+class AccountFragment() : Fragment(R.layout.fragment_account) {
 
     private lateinit var offerFragment: OfferFragment
     private lateinit var orderFragment: OrderFragment
-    private val homeActivity: HomeActivity = home
+    private lateinit var receivedReviewFragment: ReceivedReviewFragment
     private lateinit var rates: ArrayList<ImageView>
-    //private lateinit var user: User
     private lateinit var firstnameView: TextView
     private lateinit var lastnameView: TextView
     private lateinit var usernameView: TextView
     private lateinit var profileImage: ImageView
+    private lateinit var ratingQuantity: TextView
+    private lateinit var accountTabLayout: TabLayout
+    private lateinit var lastSelectedTabFragment: Fragment
+    private lateinit var deleteAccountBtn: MaterialButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //Binding don't work. Don't know why exactly but with the included TabItems it don't work.
-        val accountTabLayout = view.findViewById<TabLayout>(R.id.accountTabLayout)
+        accountTabLayout = view.findViewById<TabLayout>(R.id.accountTabLayout)
         firstnameView = view.findViewById(R.id.firstname)
         lastnameView = view.findViewById(R.id.lastname)
         usernameView = view.findViewById(R.id.username)
         profileImage = view.findViewById(R.id.profileImage)
+        ratingQuantity = view.findViewById(R.id.ratingQuantity)
+        deleteAccountBtn = view.findViewById(R.id.deleteAccountBtn)
 
-        //getUser()
         initUserDetails()
 
         rates = arrayListOf(
@@ -58,8 +66,9 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
                 view.findViewById(R.id.rate5)
         )
 
-        offerFragment = OfferFragment(uuid)
-        orderFragment = OrderFragment(uuid, homeActivity)
+        offerFragment = OfferFragment()
+        orderFragment = OrderFragment()
+        receivedReviewFragment = ReceivedReviewFragment()
 
         getStarReview()
 
@@ -68,6 +77,7 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
                 when(tab?.position){
                     0 -> changeFragment(offerFragment)
                     1 -> changeFragment(orderFragment)
+                    2 -> changeFragment(receivedReviewFragment)
                 }
             }
 
@@ -75,14 +85,51 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        changeFragment(offerFragment)
+        lastSelectedTabFragment = offerFragment
+
+        deleteAccountBtn.setOnClickListener {
+            deleteAccount()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        changeFragment(lastSelectedTabFragment)
     }
 
     private fun changeFragment(fragment: Fragment){
-        homeActivity.supportFragmentManager.beginTransaction().apply {
+        (activity as HomeActivity).supportFragmentManager.beginTransaction().apply {
             replace(R.id.fLAccountFragment, fragment)
             commit()
         }
+
+        lastSelectedTabFragment = fragment
+    }
+
+    private fun deleteAccount(){
+        val url = "${MainActivity.IP}/user?userUUID=${user.userUUID}"
+
+        val request = Request.Builder()
+                .url(url)
+                .delete()
+                .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object: Callback{
+            override fun onResponse(call: Call, response: Response) {
+                if(response.code == 200){
+                    uuid = ""
+                    user = User()
+                    setUUIDtoEmpty(requireContext())
+                    (activity as HomeActivity).openLoginActivity()
+                }
+
+                response.close()
+            }
+
+            override fun onFailure(call: Call, e: IOException) {}
+        })
     }
 
     private fun getStarReview(){
@@ -124,50 +171,8 @@ class AccountFragment(home: HomeActivity, private val uuid: String) : Fragment(R
         lastnameView.text = user.surname
         usernameView.text = user.username
         profileImage.setImageBitmap(decodeImage(user.profileImage))
+        ratingQuantity.text = "${HomeActivity.homeActivityViewModel.reviewQuantity.value} ratings"
     }
-
-    /*
-    private fun getUser(){
-        val url = "${MainActivity.IP}/user?userUUID=$uuid"
-
-        val request = Request.Builder()
-                .url(url)
-                .get()
-                .build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response){
-                val body = response.body?.string()
-
-                val gson = GsonBuilder().create()
-                user = gson.fromJson(body, User::class.java)
-
-                activity?.runOnUiThread {
-                    when(response.code){
-                        200 -> {
-                            firstnameView.text = user.firstname
-                            lastnameView.text = user.surname
-                            usernameView.text = user.username
-                            profileImage.setImageBitmap(decodeImage(user.profileImage))
-                        }
-                        404 -> {
-                            Toast.makeText(activity, "User not found.", Toast.LENGTH_SHORT).show()
-                        }
-                        else -> {
-                            Toast.makeText(activity, "Server error.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-
-                response.close()
-            }
-
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-        })
-    }*/
 
     private fun decodeImage(encodedImage: String): Bitmap {
         val imageBytes = Base64.decode(encodedImage, Base64.DEFAULT)

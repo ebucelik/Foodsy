@@ -1,6 +1,4 @@
 package ebucelik.keepeasy.foodsy.home
-
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -9,17 +7,25 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.gson.GsonBuilder
+import ebucelik.keepeasy.foodsy.Globals
+import ebucelik.keepeasy.foodsy.Globals.selectedOffer
+import ebucelik.keepeasy.foodsy.Globals.selectedOrder
 import ebucelik.keepeasy.foodsy.MainActivity
 import ebucelik.keepeasy.foodsy.R
-import ebucelik.keepeasy.foodsy.UserGlobal.user
+import ebucelik.keepeasy.foodsy.Globals.user
+import ebucelik.keepeasy.foodsy.Globals.uuid
 import ebucelik.keepeasy.foodsy.account.ReviewActivity
+import ebucelik.keepeasy.foodsy.entitiy.ChatPool
 import ebucelik.keepeasy.foodsy.entitiy.Offer
 import ebucelik.keepeasy.foodsy.entitiy.Order
 import ebucelik.keepeasy.foodsy.entitiy.User
 import ebucelik.keepeasy.foodsy.loginOrRegister.LogInActivity
+import ebucelik.keepeasy.foodsy.repositories.AccountRepository
+import ebucelik.keepeasy.foodsy.viewmodels.HomeActivityViewModel
 import okhttp3.*
 import java.io.IOException
 import java.lang.Exception
@@ -29,29 +35,32 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var homeFragment: HomeFragment
     lateinit var searchFragment: SearchFragment
+    lateinit var chatFragment: ChatFragment
     lateinit var sellFragment: SellFragment
     lateinit var accountFragment: AccountFragment
-    lateinit var tabLayout: TabLayout
-    lateinit var uuid: String
 
     companion object{
         const val ORDERINGUUID = "orderinguuid"
-        const val OFFER = "offer"
-        const val ORDER = "order"
+        const val CHATPOOL = "chatpool"
+        lateinit var homeActivityViewModel: HomeActivityViewModel
+        lateinit var tabLayout: TabLayout
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        uuid = readUUID()
-
         initializeUser()
 
-        homeFragment = HomeFragment(this)
-        searchFragment = SearchFragment(this)
-        sellFragment = SellFragment(uuid)
-        accountFragment = AccountFragment(this, uuid)
+        homeActivityViewModel = ViewModelProvider(this).get(HomeActivityViewModel::class.java)
+
+        AccountRepository.getReviewQuantity(uuid)
+
+        homeFragment = HomeFragment()
+        searchFragment = SearchFragment()
+        chatFragment = ChatFragment()
+        sellFragment = SellFragment()
+        accountFragment = AccountFragment()
 
         tabLayout = findViewById(R.id.tabLayout)
 
@@ -60,8 +69,9 @@ class HomeActivity : AppCompatActivity() {
                 when(tab.position){
                     0 -> changeFragment(homeFragment)
                     1 -> changeFragment(searchFragment)
-                    2 -> changeFragment(sellFragment)
-                    3 -> changeFragment(accountFragment)
+                    2 -> changeFragment(chatFragment)
+                    3 -> changeFragment(sellFragment)
+                    4 -> changeFragment(accountFragment)
                 }
             }
 
@@ -72,8 +82,19 @@ class HomeActivity : AppCompatActivity() {
         changeFragment(homeFragment)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if(Globals.openChatTab){
+            Globals.openChatTab = false
+            changeFragment(chatFragment)
+            val tab = tabLayout.getTabAt(2)
+            tab?.select()
+        }
+    }
+
     private fun initializeUser(){
-        if(user == null){
+        if(user.userUUID.isEmpty()){
             val url = "${MainActivity.IP}/user?userUUID=${uuid}"
 
             val request = Request.Builder()
@@ -118,7 +139,8 @@ class HomeActivity : AppCompatActivity() {
         try {
             val intent = Intent(this@HomeActivity, OfferDetailActivity::class.java)
             intent.putExtra(ORDERINGUUID, uuid)
-            intent.putExtra(OFFER, offer)
+            //intent.putExtra(OFFER, offer)
+            selectedOffer = offer;
             startActivity(intent)
         }catch (e: Exception){
             e.printStackTrace()
@@ -134,12 +156,18 @@ class HomeActivity : AppCompatActivity() {
 
     fun openReviewActivity(order: Order){
         val intent = Intent(this@HomeActivity, ReviewActivity::class.java)
-        intent.putExtra(ORDER, order)
+        //intent.putExtra(ORDER, order)
+        selectedOrder = order
         startActivity(intent)
     }
 
-    private fun readUUID(): String{
-        val sharedPref = this.getSharedPreferences("uuid", Context.MODE_PRIVATE)
-        return sharedPref.getString(R.string.uuid.toString(), "") as String
+    fun openMessageActivity(chatPool: ChatPool){
+        try {
+            val intent = Intent(this@HomeActivity, MessageActivity::class.java)
+            intent.putExtra(CHATPOOL, chatPool)
+            startActivity(intent)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 }

@@ -5,4 +5,9 @@
         <item name="android:layout_marginStart">@dimen/marginStartEnd</item>
         <item name="android:layout_marginEnd">@dimen/marginStartEnd</item>
     </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#FFD700</item>
+        <item name="colorControlActivated">#D3D3D3</item>
+    </style>
 </resources>
