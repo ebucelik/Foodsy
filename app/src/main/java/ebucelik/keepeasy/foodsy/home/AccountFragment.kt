@@ -108,26 +108,11 @@ class AccountFragment() : Fragment(R.layout.fragment_account) {
     }
 
     private fun deleteAccount(){
-        val url = "${MainActivity.IP}/delete"
-
-        val jsonObject = JSONObject()
-
-        try {
-            jsonObject.put("userUUID", user.userUUID)
-                    .put("username", user.username)
-                    .put("firstname", user.firstname)
-                    .put("surname", user.surname)
-                    .put("profileImage", user.profileImage)
-        }catch (e: JSONException){
-            e.printStackTrace()
-        }
-
-        val mediaType = "application/json; charset=utf-8".toMediaType()
-        val body = jsonObject.toString().toRequestBody(mediaType)
+        val url = "${MainActivity.IP}/user?userUUID=${user.userUUID}"
 
         val request = Request.Builder()
                 .url(url)
-                .delete(body)
+                .delete()
                 .build()
 
         val client = OkHttpClient()

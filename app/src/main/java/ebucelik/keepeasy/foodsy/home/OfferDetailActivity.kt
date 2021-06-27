@@ -72,7 +72,7 @@ class OfferDetailActivity : AppCompatActivity() {
             binding.thirdMealImage.setImageBitmap(decodeImage(offer.encodedImage2))
         }
 
-        if(offer.user?.profileImage != ""){
+        if(offer.user?.profileImage != null && offer.user?.profileImage != ""){
             binding.profileImage.setImageBitmap(offer.user?.let { decodeImage(it.profileImage) })
         }
 

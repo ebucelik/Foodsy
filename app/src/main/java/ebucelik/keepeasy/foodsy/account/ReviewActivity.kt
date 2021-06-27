@@ -73,7 +73,7 @@ class ReviewActivity : AppCompatActivity() {
             mealImage.setImageBitmap(decodeImage(order.offer.encodedImage))
         }
 
-        if(order.offer.user?.profileImage != ""){
+        if(order.offer.user?.profileImage != null && order.offer.user?.profileImage != ""){
             profileImage.setImageBitmap(order.offer.user?.let { decodeImage(it.profileImage) })
         }
 
